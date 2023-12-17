@@ -5,10 +5,10 @@ import { useRef, useState, useEffect, useMemo } from 'react';
 import butterfly from '../files/butterfly1.svg';
 import line1 from '../files/line1.svg';
 import line2 from '../files/line2.svg';
-import exampleImage from '../files/example1.png';
 import quoteIcon from '../files/quote.svg';
 import watermark from '../files/watermark.svg';
 
+import exampleImage from '../files/example1.png';
 import NextImage from 'next/image';
 
 const canvasSize = 1280;
@@ -18,17 +18,24 @@ const userTitleSize = 50;
 const customTextSize = 30;
 const quoteSize = 50;
 
-function drawLayout(ctx: CanvasRenderingContext2D) {
+const createImage = (src: string) => {
+  const image = new Image();
+  image.src = src;
+  return image;
+};
+
+function drawLayout(
+  ctx: CanvasRenderingContext2D,
+  line1: HTMLImageElement,
+  butterfly: HTMLImageElement,
+  watermark: HTMLImageElement,
+) {
   ctx.clearRect(0, 0, canvasSize, canvasSize);
 
   ctx.fillStyle = '#EEFCFA';
   ctx.fillRect(0, 0, canvasSize, canvasSize);
 
-  const img = new Image();
-  img.src = butterfly.src;
-  img.onload = () => {
-    ctx.drawImage(img, canvasSize / 2 - imageSize / 2, imageSize / 10, imageSize, imageSize);
-  };
+  ctx.drawImage(butterfly, canvasSize / 2 - imageSize / 2, imageSize / 10, imageSize, imageSize);
 
   ctx.fillStyle = '#A18BF8';
   ctx.font = `${titleSize}px Poor Story`;
@@ -37,22 +44,18 @@ function drawLayout(ctx: CanvasRenderingContext2D) {
   ctx.fillText('THE FORCE OF', canvasSize / 2, canvasSize / 3);
   ctx.fillText('MENTORING', canvasSize / 2, canvasSize / 3 + titleSize * 1.1);
 
-  const lineImage1 = new Image();
-  lineImage1.src = line1.src;
   const mainTitleLength = canvasSize * 0.8;
-  lineImage1.onload = () => {
-    ctx.drawImage(
-      lineImage1,
-      canvasSize / 2 - mainTitleLength / 2,
-      canvasSize / 2.15,
-      mainTitleLength,
-      25,
-    );
-  };
+
+  ctx.drawImage(
+    line1,
+    canvasSize / 2 - mainTitleLength / 2,
+    canvasSize / 2.15,
+    mainTitleLength,
+    25,
+  );
 
   // footer
   ctx.fillStyle = '#fff';
-  // font weight 400
   ctx.font = `400 ${quoteSize * 0.65}px Gaegu`;
   ctx.rect(0, canvasSize - titleSize * 0.9, canvasSize, titleSize * 0.9);
   ctx.fill();
@@ -64,25 +67,19 @@ function drawLayout(ctx: CanvasRenderingContext2D) {
   ctx.textBaseline = 'middle';
   ctx.fillText('Empowering people with', canvasSize - canvasSize / 3.7, hashY);
   ctx.font = `700 ${quoteSize * 0.65}px Gaegu`;
-  // make the thext drop shadow
   ctx.fillText('#TheForceOfMentoring', canvasSize - titleSize / 3.5, hashY);
 
-  const watermarkImage = new Image();
-  watermarkImage.src = watermark.src;
   const watermarkSize = 290;
   const aspectRatio = 0.18;
-  watermarkImage.onload = () => {
-    ctx.drawImage(
-      watermarkImage,
-      watermarkSize * aspectRatio * 0.5,
-      canvasSize - watermarkSize * aspectRatio * 1.3,
-      watermarkSize,
-      watermarkSize * aspectRatio,
-    );
-  };
-}
 
-// const maxLineSymbolLength = 70;
+  ctx.drawImage(
+    watermark,
+    watermarkSize * aspectRatio * 0.5,
+    canvasSize - watermarkSize * aspectRatio * 1.3,
+    watermarkSize,
+    watermarkSize * aspectRatio,
+  );
+}
 
 function parseStringIntoLines(inputString: string, restriction: number): string[] {
   const lines: string[] = [];
@@ -119,43 +116,80 @@ export default function Home() {
   const [quoteText, setQuoteText] = useState<string>('text of the quote');
   const [parsedQuoteText, setParsedQuoteText] = useState<string[]>(['text of the quote']);
 
+  const [loadedImages, setLoadedImages] = useState<Record<string, HTMLImageElement>>({});
+
+  // load images
+  useEffect(() => {
+    const images = {
+      butterfly: createImage(butterfly.src),
+      line1: createImage(line1.src),
+      line2: createImage(line2.src),
+      quoteIcon: createImage(quoteIcon.src),
+      watermark: createImage(watermark.src),
+    };
+    const loadedImages: Record<string, HTMLImageElement> = {};
+    const imagesAmount = Object.keys(images).length;
+    let loadedImagesAmount = 0;
+    for (const key in images) {
+      const image = images[key as keyof typeof images];
+      image.onload = () => {
+        loadedImages[key] = image;
+        loadedImagesAmount++;
+        if (loadedImagesAmount === imagesAmount) {
+          setLoadedImages(loadedImages);
+        }
+      };
+    }
+  }, []);
+
   useEffect(() => {
     if (canvasRef.current) {
       // set canvas size
       canvasRef.current.width = canvasSize;
       canvasRef.current.height = canvasSize;
       const ctx = canvasRef.current.getContext('2d');
-      if (!ctx) return;
-      drawLayout(ctx);
+      if (
+        !ctx ||
+        !loadedImages.line1?.complete ||
+        !loadedImages.butterfly?.complete ||
+        !loadedImages.watermark?.complete
+      )
+        return;
+
+      drawLayout(ctx, loadedImages.line1, loadedImages.butterfly, loadedImages.watermark);
       setCtx(ctx);
       console.log('ctx', ctx);
     }
-  }, [canvasRef]);
+  }, [canvasRef, loadedImages.butterfly, loadedImages.line1, loadedImages.watermark]);
 
   const reDraw = useMemo(
     () => (userTitle: string, customText: string[], quote: string[]) => {
       if (!ctx) return;
-      drawLayout(ctx);
+      Object.keys(loadedImages).forEach((key) => {
+        if (!loadedImages[key].complete) return;
+      });
+
+      console.log('reDraw', loadedImages);
+
+      drawLayout(ctx, loadedImages.line1, loadedImages.butterfly, loadedImages.watermark);
 
       ctx.fillStyle = '#2AB09A';
       ctx.font = `${userTitleSize}px New Sun`;
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
-      ctx.fillText(userTitle, canvasSize / 2, canvasSize / 1.9);
+      ctx.fillText(userTitle.toLocaleUpperCase(), canvasSize / 2, canvasSize / 1.9);
+      // letter spacing
 
-      const lineImage2 = new Image();
-      lineImage2.src = line2.src;
       const minUserTitleLength = 350;
       const userTitleLength = Math.max(userTitleSize * userTitle.length * 0.45, minUserTitleLength);
-      lineImage2.onload = () => {
-        ctx.drawImage(
-          lineImage2,
-          canvasSize / 2 - userTitleLength / 2,
-          canvasSize / 1.9 + userTitleSize * 0.6,
-          userTitleLength,
-          15,
-        );
-      };
+
+      ctx.drawImage(
+        loadedImages.line2,
+        canvasSize / 2 - userTitleLength / 2,
+        canvasSize / 1.9 + userTitleSize * 0.6,
+        userTitleLength,
+        15,
+      );
 
       ctx.fillStyle = '#1C2435';
       ctx.font = `${customTextSize}px Inter`;
@@ -183,28 +217,27 @@ export default function Home() {
         minQuoteTextLength,
       );
 
-      const quoteIconImage = new Image();
-      quoteIconImage.src = quoteIcon.src;
+      // const quoteIconImage = new Image();
+      // quoteIconImage.src = quoteIcon.src;
       const quoteIconSize = 40;
       const iconX = canvasSize / 2 - quoteTextLength - quoteIconSize / 2;
-      quoteIconImage.onload = () => {
-        ctx.drawImage(
-          quoteIconImage,
-          iconX,
-          quoteTextY - quoteIconSize / 2 + ((quote?.length - 1) / 2) * quoteSize,
-          quoteIconSize,
-          quoteIconSize,
-        );
-        ctx.drawImage(
-          quoteIconImage,
-          canvasSize - iconX - quoteIconSize,
-          quoteTextY - quoteIconSize / 2 + ((quote?.length - 1) / 2) * quoteSize,
-          quoteIconSize,
-          quoteIconSize,
-        );
-      };
+
+      ctx.drawImage(
+        loadedImages.quoteIcon,
+        iconX,
+        quoteTextY - quoteIconSize / 2 + ((quote?.length - 1) / 2) * quoteSize,
+        quoteIconSize,
+        quoteIconSize,
+      );
+      ctx.drawImage(
+        loadedImages.quoteIcon,
+        canvasSize - iconX - quoteIconSize,
+        quoteTextY - quoteIconSize / 2 + ((quote?.length - 1) / 2) * quoteSize,
+        quoteIconSize,
+        quoteIconSize,
+      );
     },
-    [ctx],
+    [ctx, loadedImages],
   );
 
   useEffect(() => {
