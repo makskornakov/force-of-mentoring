@@ -313,7 +313,7 @@ export default function Home() {
     </main>
   );
 }
-export const PreviewCanvas = styled.canvas`
+const PreviewCanvas = styled.canvas`
   outline: 1px solid var(--main-color);
 
   width: 100%;
@@ -321,7 +321,7 @@ export const PreviewCanvas = styled.canvas`
 
   font-family: 'New Sun', sans-serif;
 `;
-export const HeadContainer = styled.div`
+const HeadContainer = styled.div`
   border-bottom: 1px solid var(--main-color);
   border-top: 1px solid var(--main-color);
   padding: 2rem 4rem;
@@ -330,7 +330,7 @@ export const HeadContainer = styled.div`
   row-gap: 0.5rem;
   justify-content: center;
 `;
-export const HomeContainer = styled.div`
+const HomeContainer = styled.div`
   /* outline: 1px solid red; */
   min-height: 60vh;
   display: flex;
