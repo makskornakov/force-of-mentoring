@@ -1,80 +1,36 @@
-import { css } from '@linaria/core'
+import { css } from '@linaria/core';
 
-import { media } from './utils/media-queries'
-import { reset } from './utils/reset'
+import { media } from './utils/media-queries';
+import { reset } from './utils/reset';
 
 export const globals = css`
   :global() {
+    /* @font-face {
+  font-family: 'Poor Story';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/poorstory/v20/jizfREFUsnUct9P6cDfd4OynKj0YuSA5hTWm-r7AiNnQYpatEo8rx9k.0.woff2) format('woff2');
+  unicode-range: U+f9ca-fa0b, U+ff03-ff05, U+ff07, U+ff0a-ff0b, U+ff0d-ff19, U+ff1b, U+ff1d, U+ff20-ff5b, U+ff5d, U+ffe0-ffe3, U+ffe5-ffe6;
+} */
+    @font-face {
+      font-family: 'New Sun';
+      font-style: normal;
+      src: url('/fonts/New Sun.ttf');
+    }
+    /* import inter */
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Gaegu:wght@400;700&family=Poor+Story&display=swap');
+
     :root {
-      --max-width: 1100px;
-      --border-radius: 12px;
-      --font-mono: ui-monospace, Menlo, Monaco, 'Cascadia Mono', 'Segoe UI Mono',
-        'Roboto Mono', 'Oxygen Mono', 'Ubuntu Monospace', 'Source Code Pro',
-        'Fira Mono', 'Droid Sans Mono', 'Courier New', monospace;
-
-      --foreground-rgb: 0, 0, 0;
-      --background-start-rgb: 214, 219, 220;
-      --background-end-rgb: 255, 255, 255;
-
-      --primary-glow: conic-gradient(
-        from 180deg at 50% 50%,
-        #16abff33 0deg,
-        #0885ff33 55deg,
-        #54d6ff33 120deg,
-        #0071ff33 160deg,
-        transparent 360deg
-      );
-      --secondary-glow: radial-gradient(
-        rgba(255, 255, 255, 1),
-        rgba(255, 255, 255, 0)
-      );
-
-      --tile-start-rgb: 239, 245, 249;
-      --tile-end-rgb: 228, 232, 233;
-      --tile-border: conic-gradient(
-        #00000080,
-        #00000040,
-        #00000030,
-        #00000020,
-        #00000010,
-        #00000010,
-        #00000080
-      );
-
-      --callout-rgb: 238, 240, 241;
-      --callout-border-rgb: 172, 175, 176;
-      --card-rgb: 180, 185, 188;
-      --card-border-rgb: 131, 134, 135;
+      --background-color: #f5f5f5;
+      --main-color: #111111;
+      --border-color: #a1a1a1;
 
       ${media.prefersColorSchemeDark} {
-        --foreground-rgb: 255, 255, 255;
-        --background-start-rgb: 0, 0, 0;
-        --background-end-rgb: 0, 0, 0;
-
-        --primary-glow: radial-gradient(rgba(1, 65, 255, 0.4), rgba(1, 65, 255, 0));
-        --secondary-glow: linear-gradient(
-          to bottom right,
-          rgba(1, 65, 255, 0),
-          rgba(1, 65, 255, 0),
-          rgba(1, 65, 255, 0.3)
-        );
-
-        --tile-start-rgb: 2, 13, 46;
-        --tile-end-rgb: 2, 5, 19;
-        --tile-border: conic-gradient(
-          #ffffff80,
-          #ffffff40,
-          #ffffff30,
-          #ffffff20,
-          #ffffff10,
-          #ffffff10,
-          #ffffff80
-        );
-
-        --callout-rgb: 20, 20, 20;
-        --callout-border-rgb: 108, 108, 108;
-        --card-rgb: 100, 100, 100;
-        --card-border-rgb: 200, 200, 200;
+        --background-color: #111111;
+        --main-color: #f5f5f5;
+        --border-color: #a1a1a1;
       }
     }
 
@@ -91,17 +47,18 @@ export const globals = css`
     }
 
     body {
-      color: rgb(var(--foreground-rgb));
-      background: linear-gradient(
-          to bottom,
-          transparent,
-          rgb(var(--background-end-rgb))
-        )
-        rgb(var(--background-start-rgb));
+      color: var(--main-color);
+      background: var(--background-color);
     }
 
     a {
       ${reset.a}
+    }
+    h1 {
+      font-weight: 400;
+    }
+    h2 {
+      font-weight: 300;
     }
 
     ${media.prefersColorSchemeDark} {
@@ -110,4 +67,4 @@ export const globals = css`
       }
     }
   }
-`
+`;
