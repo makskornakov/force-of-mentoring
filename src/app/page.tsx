@@ -1,5 +1,4 @@
 'use client';
-import { styled } from '@linaria/react';
 import { useRef, useState, useEffect, useMemo } from 'react';
 
 import butterfly from '../files/butterfly1.svg';
@@ -10,6 +9,12 @@ import watermark from '../files/watermark.svg';
 
 import exampleImage from '../files/example1.png';
 import NextImage from 'next/image';
+import {
+  HeadContainer,
+  HomeContainer,
+  PreviewContainer,
+  PreviewCanvasContainer,
+} from './page.styled';
 
 const canvasSize = 1280;
 const imageSize = 330;
@@ -274,46 +279,48 @@ export default function Home() {
           }}
         >
           <h2>Editor</h2>
-          <h3>Title</h3>
-          <input type="text" value={userTitle} onChange={(e) => setUserTitle(e.target.value)} />
-          <h3>Custom Text</h3>
-          <textarea
-            style={{
-              height: '10rem',
-            }}
-            value={customText}
-            onChange={(e) => {
-              const maxLines = 6;
-              const lines = parseStringIntoLines(e.target.value, 70);
-              if (lines.length > maxLines) return;
+          <label>
+            <h3>Title</h3>
+            <input type="text" value={userTitle} onChange={(e) => setUserTitle(e.target.value)} />
+          </label>
+          <label>
+            <h3>Custom text</h3>
+            <textarea
+              style={{
+                height: '10rem',
+              }}
+              value={customText}
+              onChange={(e) => {
+                const maxLines = 6;
+                const lines = parseStringIntoLines(e.target.value, 70);
+                if (lines.length > maxLines) return;
 
-              setCustomText(e.target.value);
-              setParsedCustomText(lines);
-            }}
-          />
-          <h3>Quote</h3>
-          <textarea
-            value={quoteText}
-            onChange={(e) => {
-              const maxLines = 3;
-              const lines = parseStringIntoLines(e.target.value, 40);
-              if (lines.length > maxLines) return;
-              setParsedQuoteText(lines);
-              setQuoteText(e.target.value);
-            }}
-          />
+                setCustomText(e.target.value);
+                setParsedCustomText(lines);
+              }}
+            />
+          </label>
+          <label>
+            <h3>Quote</h3>
+            <textarea
+              style={{
+                height: '4.5rem',
+              }}
+              value={quoteText}
+              onChange={(e) => {
+                const maxLines = 3;
+                const lines = parseStringIntoLines(e.target.value, 40);
+                if (lines.length > maxLines) return;
+                setParsedQuoteText(lines);
+                setQuoteText(e.target.value);
+              }}
+            />
+          </label>
         </div>
         <PreviewContainer>
           <h2>Preview</h2>
-          <div
-            style={{
-              // outline: '1px solid red',
-              position: 'relative',
-              width: '60%',
-              aspectRatio: '1',
-            }}
-          >
-            <PreviewCanvas ref={canvasRef} />
+          <PreviewCanvasContainer>
+            <canvas ref={canvasRef} />
             {/* <NextImage
               src={exampleImage}
               fill
@@ -325,7 +332,7 @@ export default function Home() {
                 opacity: 0.3,
               }}
             /> */}
-          </div>
+          </PreviewCanvasContainer>
 
           <button
             onClick={() => {
@@ -334,7 +341,7 @@ export default function Home() {
                 console.log('dataUrl', dataUrl);
                 const a = document.createElement('a');
                 a.href = dataUrl;
-                a.download = 'template.png';
+                a.download = `${userTitle || 'title'}.png`;
                 a.click();
               }
             }}
@@ -346,75 +353,3 @@ export default function Home() {
     </main>
   );
 }
-const PreviewCanvas = styled.canvas`
-  outline: 1px solid var(--main-color);
-
-  width: 100%;
-  aspect-ratio: 1;
-
-  font-family: 'New Sun', sans-serif;
-`;
-const HeadContainer = styled.div`
-  border-bottom: 1px solid var(--main-color);
-  border-top: 1px solid var(--main-color);
-  padding: 2rem 4rem;
-  display: flex;
-  flex-direction: column;
-  row-gap: 0.5rem;
-  justify-content: center;
-`;
-const HomeContainer = styled.div`
-  /* outline: 1px solid red; */
-  min-height: 60vh;
-  display: flex;
-  padding: 0 4rem;
-  flex-direction: row;
-  justify-content: space-between;
-  h2 {
-    border-bottom: 1px solid var(--main-color);
-  }
-
-  > div {
-    display: flex;
-    align-items: center;
-    width: 48%;
-    flex-direction: column;
-    row-gap: 1rem;
-  }
-  /* all inputs and texareas */
-  input,
-  textarea {
-    width: 90%;
-    padding: 0.5rem;
-    border-radius: 0.5rem;
-    border: 1px solid var(--border-color);
-    outline: none;
-    font-size: 1rem;
-
-    &:focus,
-    &:active {
-      border: 1px solid var(--main-color);
-    }
-  }
-`;
-const PreviewContainer = styled.div`
-  align-items: center;
-
-  > button {
-    background-color: transparent;
-    padding: 0.5rem 1rem;
-    border-radius: 0.5rem;
-    border: 1px solid;
-    border-color: var(--border-color);
-    outline: none;
-    color: var(--main-color);
-    font-size: 1rem;
-    cursor: pointer;
-    transition-duration: 0.2s;
-    transition-property: border-color;
-
-    &:hover {
-      border-color: #03ba00;
-    }
-  }
-`;

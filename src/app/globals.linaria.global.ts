@@ -57,7 +57,8 @@ export const globals = css`
     h1 {
       font-weight: 400;
     }
-    h2 {
+    h2,
+    h3 {
       font-weight: 300;
     }
 
