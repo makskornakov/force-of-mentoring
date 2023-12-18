@@ -70,21 +70,14 @@ export default function MyDropzone({
           </div>
         </>
       ) : (
-        <div
+        <StyledDropzone
           {...getRootProps()}
-          style={{
-            border: '1px dashed',
-            borderColor:
-              isDragActive || isFocused || isFileDialogActive ? '#4cd800' : 'var(--border-color)',
-            padding: '1rem',
-            transition: 'border-color 0.3s',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            width: '100%',
-            height: '8rem',
-            cursor: 'pointer',
-          }}
+          // style={{
+          //   borderColor:
+          //     isDragActive || isFocused || isFileDialogActive ? '#a18bf8' : 'var(--border-color)',
+          // }}
+
+          focused={isDragActive || isFocused || isFileDialogActive}
         >
           <input {...getInputProps()} />
           {isDragActive ? (
@@ -92,9 +85,28 @@ export default function MyDropzone({
           ) : (
             <p>Drag & drop an image here, or click to select one</p>
           )}
-        </div>
+        </StyledDropzone>
       )}
     </>
     // </div>
   );
 }
+const StyledDropzone = styled.div<{ focused?: boolean }>`
+  border: 1px dashed;
+  border-color: ${(props) => (props.focused ? '#a18bf8' : 'var(--border-color)')};
+  padding: 1rem;
+  transition: border-color 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+
+  height: 8rem;
+  cursor: pointer;
+
+  &:hover,
+  &:focus,
+  &:active {
+    border-color: #a18bf8;
+  }
+`;

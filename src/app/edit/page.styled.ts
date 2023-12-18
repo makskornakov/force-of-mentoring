@@ -88,6 +88,7 @@ export const HomeContainer = styled.div`
     transition-duration: 0.2s;
     transition-property: border-color;
 
+    &:hover,
     &:focus,
     &:active {
       border: 1px solid var(--main-color);
@@ -100,25 +101,34 @@ export const HomeContainer = styled.div`
     appearance: none;
     width: 70%;
     height: 0.4rem;
-    background: var(--secondary-color);
+    background-color: var(--border-color);
     outline: none;
     border-radius: 0.25rem;
     border: none;
     cursor: pointer;
     padding: 0;
+    transition-duration: 0.3s;
+    transition-property: background-color;
+
+    &:hover,
+    &:focus,
+    &:active {
+      background-color: var(--main-color);
+    }
 
     &::-webkit-slider-thumb {
       appearance: none;
       width: 1rem;
       height: 1rem;
-      background-color: var(--border-color);
+      background-color: var(--main-color);
       border-radius: 50%;
-      transition: background-color 0.2s ease-in-out;
-
+      transition: background-color 0.3s;
+      /* small dark shadow */
+      box-shadow: 0 0 0.3rem 0.1rem var(--background-color);
       &:hover,
       &:focus,
       &:active {
-        background-color: red;
+        background-color: #a18bf8;
       }
     }
 
@@ -217,4 +227,32 @@ export const PresetImageContainer = styled.div<{ selected?: boolean }>`
   &:focus {
     border-color: #1cef18;
   }
+`;
+
+export const PresetLabelWrapper = styled.label`
+  /* outline: 1px solid red; */
+
+  display: flex;
+  flex-direction: column;
+  row-gap: 0.5rem;
+  align-items: center;
+  cursor: pointer;
+
+  &:hover {
+    > div {
+      border-color: #1cef18;
+    }
+  }
+`;
+
+export const AllPresetsContainer = styled.div`
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  align-items: flex-start;
+  row-gap: 1.5rem;
+  column-gap: 1.5rem;
+  padding: 1rem 0;
+  border-top: 1px solid var(--border-color);
 `;

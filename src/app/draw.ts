@@ -131,7 +131,7 @@ export function reDrawOnCanvas({
 
   // draw user image
 
-  if (selectedImageSrc) {
+  if (selectedImageSrc && editMode === 'media') {
     console.log('file', selectedImageSrc);
 
     const userSelectedImage = new Image();

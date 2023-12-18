@@ -37,6 +37,8 @@ import {
   StyledButton,
   CopyrightSpan,
   PresetImageContainer,
+  PresetLabelWrapper,
+  AllPresetsContainer,
 } from './page.styled';
 import { createImage, drawLayout, parseStringIntoLines, reDrawOnCanvas } from '../draw';
 import MyDropzone from '../DropZone';
@@ -267,38 +269,15 @@ export default function Home() {
                     >
                       Or choose from presets:
                     </h4> */}
-                    <div
-                      style={{
-                        // outline: '1px solid red',
-                        width: '100%',
-                        display: 'flex',
-                        flexWrap: 'wrap',
-                        flexDirection: 'row',
-                        rowGap: '1.5rem',
-                        columnGap: '1.5rem',
-                        padding: '1rem 0',
-                        borderTop: '1px solid var(--border-color)',
-                        // borderBottom: '1px solid var(--border-color)',
-                        // justifyContent: 'center',
-                        // alignItems: 'center',
-                      }}
-                    >
+                    <AllPresetsContainer>
                       {presets.map((preset) => (
-                        <div
+                        <PresetLabelWrapper
                           key={preset.name}
-                          style={{
-                            display: 'flex',
-                            flexDirection: 'column',
-                            rowGap: '.5rem',
-                            alignItems: 'center',
+                          onClick={() => {
+                            setSelectedImageSrc(preset.src);
                           }}
                         >
-                          <PresetImageContainer
-                            onClick={() => {
-                              setSelectedImageSrc(preset.src);
-                            }}
-                            selected={selectedImageSrc === preset.src}
-                          >
+                          <PresetImageContainer selected={selectedImageSrc === preset.src}>
                             <NextImage
                               src={preset.src}
                               fill
@@ -318,9 +297,9 @@ export default function Home() {
                           >
                             {preset.name}
                           </h4>
-                        </div>
+                        </PresetLabelWrapper>
                       ))}
-                    </div>
+                    </AllPresetsContainer>
                   </>
                 )}
               </div>
@@ -349,7 +328,14 @@ export default function Home() {
               </div>
 
               {selectedImage && (
-                <label>
+                <div
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    rowGap: '0.5rem',
+                    width: '100%',
+                  }}
+                >
                   <h3>Image size</h3>
                   <input
                     type="range"
@@ -358,7 +344,7 @@ export default function Home() {
                     value={selectedImageSize}
                     onChange={(e) => setSelectedImageSize(+e.target.value)}
                   />
-                </label>
+                </div>
               )}
             </>
           )}
