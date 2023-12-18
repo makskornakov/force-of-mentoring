@@ -16,21 +16,36 @@ export function drawLayout(
   ctx.fillStyle = '#EEFCFA';
   ctx.fillRect(0, 0, canvasSize, canvasSize);
 
-  ctx.drawImage(butterfly, canvasSize / 2 - logoSize / 2, logoSize / 10, logoSize, logoSize);
+  if (editMode === 'text') {
+    ctx.drawImage(butterfly, canvasSize / 2 - logoSize / 2, logoSize / 10, logoSize, logoSize);
+  } else {
+    // draw 2 smaller ones one top left and one top right corner
+    const smallLogoSize = logoSize * 0.5;
+    ctx.drawImage(butterfly, smallLogoSize / 8, smallLogoSize * 0.05, smallLogoSize, smallLogoSize);
+    ctx.save();
+    ctx.translate(canvasSize, 0);
+    ctx.scale(-1, 1);
+    ctx.drawImage(butterfly, smallLogoSize / 8, smallLogoSize * 0.05, smallLogoSize, smallLogoSize);
+    ctx.restore();
+  }
 
   ctx.fillStyle = '#A18BF8';
-  ctx.font = `${titleSize}px Poor Story`;
   ctx.textAlign = 'center';
   ctx.textBaseline = 'middle';
-  ctx.fillText('THE FORCE OF', canvasSize / 2, canvasSize / 3);
-  ctx.fillText('MENTORING', canvasSize / 2, canvasSize / 3 + titleSize * 1.1);
+  ctx.font = `${titleSize}px Poor Story`;
+  if (editMode === 'text') {
+    ctx.fillText('THE FORCE OF', canvasSize / 2, canvasSize / 3);
+    ctx.fillText('MENTORING', canvasSize / 2, canvasSize / 3 + titleSize * 1.1);
+  } else {
+    ctx.fillText('THE FORCE OF MENTORING', canvasSize / 2, titleSize * 1.9);
+  }
 
-  const mainTitleLength = canvasSize * 0.8;
+  const mainTitleLength = canvasSize * (editMode === 'text' ? 0.8 : 0.94);
 
   ctx.drawImage(
     line1,
     canvasSize / 2 - mainTitleLength / 2,
-    canvasSize / 2.15,
+    editMode === 'text' ? canvasSize / 2.15 : titleSize * 1.9 + titleSize * 0.9,
     mainTitleLength,
     25,
   );

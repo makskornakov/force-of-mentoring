@@ -7,7 +7,7 @@ import line2 from '../files/line2.svg';
 import quoteIcon from '../files/quote.svg';
 import watermark from '../files/watermark.svg';
 
-import exampleImage from '../files/example1.png';
+import exampleImage from '../files/example2.png';
 import NextImage from 'next/image';
 
 import {
@@ -15,6 +15,7 @@ import {
   HomeContainer,
   PreviewContainer,
   PreviewCanvasContainer,
+  StyledButton,
 } from './page.styled';
 import { createImage, drawLayout, parseStringIntoLines, reDrawOnCanvas } from './draw';
 import MyDropzone from './DropZone';
@@ -175,23 +176,26 @@ export default function Home() {
           >
             <h3>Mode: </h3>
             {editorModes.map((mode) => (
-              <button
+              <StyledButton
+                small
                 key={mode}
                 onClick={() => setEditingMode(mode)}
                 style={{
-                  fontSize: '1rem',
-                  cursor: 'pointer',
-                  fontWeight: '400',
-                  padding: '0.25rem 0.5rem',
-                  outline: 'none',
-                  borderRadius: '0.25rem',
-                  border: '1px solid var(--border-color)',
-                  backgroundColor: 'transparent',
-                  opacity: editingMode === mode ? 1 : 0.5,
+                  //   fontSize: '1rem',
+                  //   cursor: 'pointer',
+                  //   fontWeight: '400',
+                  //   padding: '0.25rem 0.5rem',
+                  //   outline: 'none',
+                  //   borderRadius: '0.25rem',
+                  //   border: '1px solid var(--border-color)',
+                  //   backgroundColor: 'transparent',
+                  borderColor: editingMode === mode ? 'white' : '',
+                  color: editingMode === mode ? 'white' : '',
+                  // opacity: editingMode === mode ? 1 : 0.5,
                 }}
               >
-                {mode}
-              </button>
+                {mode.charAt(0).toUpperCase() + mode.slice(1)}
+              </StyledButton>
             ))}
           </div>
           {editingMode === 'text' ? (
@@ -224,21 +228,6 @@ export default function Home() {
             </>
           ) : (
             <>
-              {/* <label>
-                <h3>Image</h3>
-                <input
-                  type="file"
-                  onChange={(e) => {
-                    const file = e.target.files?.[0];
-                    if (!file) return;
-                    const image = new Image();
-                    image.src = URL.createObjectURL(file);
-                    image.onload = () => {
-                      setSelectedImage(image);
-                    };
-                  }}
-                />
-              </label> */}
               <MyDropzone selectedImage={selectedImage} setImage={setSelectedImageSrc} />
               {selectedImage && (
                 <label>
@@ -288,7 +277,7 @@ export default function Home() {
             /> */}
           </PreviewCanvasContainer>
 
-          <button
+          <StyledButton
             onClick={() => {
               if (canvasRef.current) {
                 const dataUrl = canvasRef.current.toDataURL('image/png');
@@ -299,9 +288,10 @@ export default function Home() {
                 a.click();
               }
             }}
+            green
           >
             Download
-          </button>
+          </StyledButton>
         </PreviewContainer>
       </HomeContainer>
     </main>

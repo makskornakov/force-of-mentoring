@@ -107,11 +107,34 @@ export const HomeContainer = styled.div`
     }
   }
 `;
+
+export const StyledButton = styled.button<{ red?: boolean; green?: boolean; small?: boolean }>`
+  background-color: transparent;
+  /* padding: 0.5rem 1rem; */
+  padding: ${({ small }) => (small ? '0.25rem 0.5rem' : '0.5rem 1rem')};
+  border-radius: ${({ small }) => (small ? '0.25rem' : '0.5rem')};
+  border: 1px solid;
+  border-color: var(--border-color);
+  outline: none;
+  /* opacity: ${({ red }) => (red ? 1 : 0.5)}; */
+  color: var(--border-color);
+  font-size: ${({ small }) => (small ? '0.9rem' : '1rem')};
+  cursor: pointer;
+  transition-duration: 0.3s;
+  transition-property: border-color, color;
+
+  &:hover,
+  &:focus {
+    border-color: ${({ red, green }) => (red ? '#e60000' : green ? '#03ba00' : 'white')};
+    color: #fff;
+    /* opacity: 1; */
+  }
+`;
 export const PreviewContainer = styled.div`
   align-items: center;
   min-width: 400px;
 
-  > button {
+  /* > button {
     background-color: transparent;
     padding: 0.5rem 1rem;
     border-radius: 0.5rem;
@@ -128,5 +151,5 @@ export const PreviewContainer = styled.div`
     &:focus {
       border-color: #03ba00;
     }
-  }
+  } */
 `;

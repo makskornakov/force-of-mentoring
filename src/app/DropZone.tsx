@@ -2,6 +2,7 @@ import { useDropzone } from 'react-dropzone';
 import NextImage from 'next/image';
 import { styled } from '@linaria/react';
 import { revalidatePath } from 'next/cache';
+import { StyledButton } from './page.styled';
 
 export default function MyDropzone({
   setImage,
@@ -67,14 +68,19 @@ export default function MyDropzone({
             />
           </div>
 
-          <RemoveButton onClick={() => setImage(undefined)}>Remove</RemoveButton>
+          <StyledButton onClick={() => setImage(undefined)} red small>
+            Remove
+          </StyledButton>
         </>
       ) : (
         <div
           {...getRootProps()}
           style={{
-            border: '1px dashed var(--border-color)',
+            border: '1px dashed',
+            borderColor:
+              isDragActive || isFocused || isFileDialogActive ? '#2196f3' : 'var(--border-color)',
             padding: '1rem',
+            transition: 'border-color 0.3s',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
@@ -94,19 +100,3 @@ export default function MyDropzone({
     </div>
   );
 }
-
-const RemoveButton = styled.button`
-  font-size: 1rem;
-  cursor: pointer;
-  font-weight: 400;
-  padding: 0.25rem 0.5rem;
-  outline: none;
-  border-radius: 0.25rem;
-  border: 1px solid var(--border-color);
-  background-color: transparent;
-  transition: color 0.3s;
-
-  &:hover {
-    color: #e5321e;
-  }
-`;
