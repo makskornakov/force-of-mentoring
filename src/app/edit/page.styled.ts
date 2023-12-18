@@ -2,6 +2,7 @@ import { styled } from '@linaria/react';
 export const PreviewCanvasContainer = styled.div`
   position: relative;
   width: 60%;
+  margin-top: 4.5rem;
   aspect-ratio: 1;
   > canvas {
     /* media color scheme light */
@@ -20,9 +21,11 @@ export const PreviewCanvasContainer = styled.div`
 
   @media (max-width: 1000px) {
     width: 80%;
+    margin-top: 2rem;
   }
 
   @media (max-width: 500px) {
+    margin-top: 1rem;
     /* width: 95%; */
   }
 `;
@@ -181,11 +184,6 @@ export const StyledButton = styled.button<{ red?: boolean; green?: boolean; smal
     /* opacity: 1; */
   }
 `;
-export const PreviewContainer = styled.div`
-  align-items: center;
-  /* justify-content: center; */
-  min-width: 400px;
-`;
 
 export const CopyrightSpan = styled.span`
   /* outline: 1px solid red; */
@@ -244,7 +242,11 @@ export const PresetLabelWrapper = styled.label`
     }
   }
 `;
-
+export const PreviewContainer = styled.div`
+  align-items: center;
+  /* justify-content: center; */
+  min-width: 400px;
+`;
 export const AllPresetsContainer = styled.div`
   width: 100%;
   display: flex;
