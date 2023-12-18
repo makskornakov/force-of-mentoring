@@ -95,7 +95,7 @@ export const HomeContainer = styled.div`
   input[type='range'] {
     /* min-width: 100px; */
     appearance: none;
-    width: 100%;
+    width: 70%;
     height: 0.4rem;
     background: var(--secondary-color);
     outline: none;
@@ -117,6 +117,10 @@ export const HomeContainer = styled.div`
       &:active {
         background-color: red;
       }
+    }
+
+    @media (max-width: 500px) {
+      width: 100%;
     }
   }
 
