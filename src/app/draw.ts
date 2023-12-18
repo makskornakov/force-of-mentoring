@@ -46,7 +46,7 @@ export function drawLayout(
   ctx.drawImage(
     line1,
     canvasSize / 2 - mainTitleLength / 2,
-    editMode === 'text' ? canvasSize / 2.15 : titleSize * 1.9 + titleSize * 0.9,
+    editMode === 'text' ? canvasSize / 2.15 : titleSize * 2.4,
     mainTitleLength,
     25,
   );
@@ -106,7 +106,7 @@ export function reDrawOnCanvas({
   customText: string[];
   quote: string[];
   selectedImage?: HTMLImageElement;
-  selectedImageSize?: number;
+  selectedImageSize: number;
   editMode: EditorMode;
 }) {
   if (!ctx) return;
@@ -134,25 +134,35 @@ export function reDrawOnCanvas({
   if (selectedImage && editMode === 'media') {
     console.log('file', selectedImage);
 
-    const userImagePercent = selectedImageSize || 50;
+    const addonToSize =
+      (userTitle.length === 0 ? 5 : 0) + (quote.length === 0 ? 5 : -(quote.length - 1) * 3);
+    console.log('addonToSize', addonToSize);
+    const userImagePercent = selectedImageSize + addonToSize;
     const aspectRatio = selectedImage.height / selectedImage.width;
+
+    const addonToY =
+      (userTitle.length === 0 ? -userTitleSize : 0) +
+      (quote.length === 0 ? quoteSize * 0.5 : -quoteSize * quote.length * 0.4);
+
     const userImageSizeY = canvasSize * (userImagePercent / 100);
     const userImageSizeX = userImageSizeY / aspectRatio;
 
     ctx.drawImage(
       selectedImage,
       canvasSize / 2 - userImageSizeX / 2,
-      canvasSize / 2 - userImageSizeY / 2.5,
+      canvasSize / 1.7 - userImageSizeY / 2 + addonToY,
+      // canvasSize / 1.7 - userImageSizeY / 2,
       userImageSizeX,
       userImageSizeY,
     );
   }
-  if (editMode === 'text') {
+  if (userTitle.length > 0) {
     ctx.fillStyle = '#2AB09A';
     ctx.font = `${userTitleSize}px New Sun`;
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
-    ctx.fillText(userTitle.toLocaleUpperCase(), canvasSize / 2, canvasSize / 1.9);
+    const userTitleY = editMode === 'text' ? canvasSize / 1.9 : titleSize * 3.2;
+    ctx.fillText(userTitle.toLocaleUpperCase(), canvasSize / 2, userTitleY);
 
     const minUserTitleLength = 350;
     const userTitleLength = Math.max(userTitleSize * userTitle.length * 0.45, minUserTitleLength);
@@ -160,11 +170,12 @@ export function reDrawOnCanvas({
     ctx.drawImage(
       loadedImages.line2,
       canvasSize / 2 - userTitleLength / 2,
-      canvasSize / 1.9 + userTitleSize * 0.6,
+      userTitleY + userTitleSize * 0.5,
       userTitleLength,
       15,
     );
-
+  }
+  if (editMode === 'text') {
     ctx.fillStyle = '#1C2435';
     ctx.font = `${customTextSize}px Inter`;
     ctx.textAlign = 'center';

@@ -150,8 +150,8 @@ export default function Home() {
         userTitle: string,
         customText: string[],
         quote: string[],
+        selectedImageSize: number,
         userSelectedImage?: HTMLImageElement | undefined,
-        selectedImageSize?: number,
       ) =>
         reDrawOnCanvas({
           ctx,
@@ -174,11 +174,11 @@ export default function Home() {
   function setNewImageAndRedraw(image: HTMLImageElement | undefined) {
     setSelectedImage(image);
     // ! OTher wise it will not update on drop
-    reDraw(userTitle, parsedCustomText, parsedQuoteText, image, selectedImageSize);
+    reDraw(userTitle, parsedCustomText, parsedQuoteText, selectedImageSize, image);
   }
 
   useEffect(() => {
-    reDraw(userTitle, parsedCustomText, parsedQuoteText, selectedImage, selectedImageSize);
+    reDraw(userTitle, parsedCustomText, parsedQuoteText, selectedImageSize, selectedImage);
   }, [userTitle, reDraw, parsedCustomText, parsedQuoteText, selectedImageSize, selectedImage]);
 
   return (
@@ -214,16 +214,12 @@ export default function Home() {
               </StyledButton>
             ))}
           </div>
+          <label>
+            <h3>Title</h3>
+            <input type="text" value={userTitle} onChange={(e) => setUserTitle(e.target.value)} />
+          </label>
           {editingMode === 'text' ? (
             <>
-              <label>
-                <h3>Title</h3>
-                <input
-                  type="text"
-                  value={userTitle}
-                  onChange={(e) => setUserTitle(e.target.value)}
-                />
-              </label>
               <label>
                 <h3>Custom text</h3>
                 <textarea
@@ -343,7 +339,7 @@ export default function Home() {
                   <input
                     type="range"
                     min={20}
-                    max={60}
+                    max={55}
                     value={selectedImageSize}
                     onChange={(e) => setSelectedImageSize(+e.target.value)}
                   />
