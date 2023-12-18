@@ -144,7 +144,7 @@ export function reDrawOnCanvas({
       ctx.drawImage(
         userSelectedImage,
         canvasSize / 2 - userImageSizeX / 2,
-        canvasSize / 2 - userImageSizeY / 2.2,
+        canvasSize / 2 - userImageSizeY / 2.5,
         userImageSizeX,
         userImageSizeY,
       );

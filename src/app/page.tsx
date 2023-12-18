@@ -8,8 +8,22 @@ import line2 from '../files/line2.svg';
 import quoteIcon from '../files/quote.svg';
 import watermark from '../files/watermark.svg';
 
+// presets
+// import mentoringImpact from '../files/presets/mentoringImpact.svg';
+
 import exampleImage from '../files/example2.png';
 import NextImage from 'next/image';
+
+const presets = [
+  {
+    name: 'Mentoring Impact',
+    src: '/presets/mentoringImpact.svg',
+  },
+  {
+    name: 'Mentoring Benefits for Youth',
+    src: '/presets/mentoringBenefits.svg',
+  },
+];
 
 import {
   HeadContainer,
@@ -18,6 +32,7 @@ import {
   PreviewCanvasContainer,
   StyledButton,
   CopyrightSpan,
+  PresetImageContainer,
 } from './page.styled';
 import { createImage, drawLayout, parseStringIntoLines, reDrawOnCanvas } from './draw';
 import MyDropzone from './DropZone';
@@ -57,6 +72,7 @@ export default function Home() {
   const [selectedImageSize, setSelectedImageSize] = useState<number>(40);
 
   const [loadedImages, setLoadedImages] = useState<Record<string, HTMLImageElement>>({});
+  // const [loadedPresets, setLoadedPresets] = useState<Record<string, HTMLImageElement>>({});
 
   // load images
   useEffect(() => {
@@ -237,7 +253,90 @@ export default function Home() {
             </>
           ) : (
             <>
-              <MyDropzone selectedImage={selectedImage} setImage={setSelectedImageSrc} />
+              {/* if selected src is from presets don't show drop zone */}
+              <div
+                style={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  width: '100%',
+                  rowGap: '0.5rem',
+                  alignItems: 'flex-start',
+                }}
+              >
+                <h3>Image</h3>
+                {presets.find((preset) => preset.src === selectedImageSrc) ? null : (
+                  <MyDropzone selectedImage={selectedImage} setImage={setSelectedImageSrc} />
+                )}
+                {(!selectedImageSrc ||
+                  presets.find((preset) => preset.src === selectedImageSrc)) && (
+                  <>
+                    <h4
+                      style={{
+                        marginTop: '.5rem',
+                      }}
+                    >
+                      Or choose from presets:
+                    </h4>
+                    <div
+                      style={{
+                        // outline: '1px solid red',
+                        width: '100%',
+                        display: 'flex',
+                        flexWrap: 'wrap',
+                        flexDirection: 'row',
+                        rowGap: '1.5rem',
+                        columnGap: '1.5rem',
+                        // justifyContent: 'center',
+                        // alignItems: 'center',
+                      }}
+                    >
+                      {presets.map((preset) => (
+                        <div
+                          key={preset.name}
+                          style={{
+                            display: 'flex',
+                            flexDirection: 'column',
+                            rowGap: '.5rem',
+                            alignItems: 'center',
+                          }}
+                        >
+                          <PresetImageContainer
+                            onClick={() => {
+                              setSelectedImageSrc(preset.src);
+                            }}
+                            selected={selectedImageSrc === preset.src}
+                          >
+                            <NextImage
+                              src={preset.src}
+                              fill
+                              alt={preset.name}
+                              quality={20}
+                              style={{
+                                padding: '.5rem',
+                                objectFit: 'contain',
+                              }}
+                            />
+                          </PresetImageContainer>
+                          <h4
+                            style={{
+                              width: '8rem',
+                              textAlign: 'center',
+                            }}
+                          >
+                            {preset.name}
+                          </h4>
+                        </div>
+                      ))}
+                    </div>
+                  </>
+                )}
+              </div>
+
+              {selectedImageSrc && (
+                <StyledButton onClick={() => setSelectedImageSrc(undefined)} red small>
+                  Remove
+                </StyledButton>
+              )}
               {selectedImage && (
                 <label>
                   <h3>Image size</h3>

@@ -29,7 +29,7 @@ export const globals = css`
       --border-color: #777;
 
       ${media.prefersColorSchemeDark} {
-        --background-color: #111111;
+        --background-color: #151515;
         --secondary-color: #888;
         --main-color: #f5f5f5;
         --border-color: #a1a1a1;
@@ -60,7 +60,8 @@ export const globals = css`
       font-weight: 400;
     }
     h2,
-    h3 {
+    h3,
+    h4 {
       font-weight: 300;
     }
 

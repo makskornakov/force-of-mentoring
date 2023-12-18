@@ -191,3 +191,22 @@ export const CopyrightSpan = styled.span`
     }
   }
 `;
+export const PresetImageContainer = styled.div<{ selected?: boolean }>`
+  background-color: #eefcfa;
+  position: relative;
+  border: 3px dashed;
+  /* border-color: var(--border-color); */
+  border-color: ${({ selected }) => (selected ? '#1cef18' : 'var(--border-color)')};
+  border-radius: 0.5rem;
+
+  cursor: pointer;
+  width: 8rem;
+  height: 8rem;
+  transition-duration: 0.3s;
+  transition-property: border-color;
+
+  &:hover,
+  &:focus {
+    border-color: #1cef18;
+  }
+`;

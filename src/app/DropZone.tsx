@@ -37,16 +37,17 @@ export default function MyDropzone({
   });
 
   return (
-    <div
-      style={{
-        display: 'flex',
-        flexDirection: 'column',
-        width: '100%',
-        rowGap: '0.5rem',
-        alignItems: 'flex-start',
-      }}
-    >
-      <h3>Image</h3>
+    // <div
+    //   style={{
+    //     display: 'flex',
+    //     flexDirection: 'column',
+    //     width: '100%',
+    //     rowGap: '0.5rem',
+    //     alignItems: 'flex-start',
+    //   }}
+    // >
+    //   <h3>Image</h3>
+    <>
       {selectedImage ? (
         <>
           <div
@@ -67,10 +68,6 @@ export default function MyDropzone({
               }}
             />
           </div>
-
-          <StyledButton onClick={() => setImage(undefined)} red small>
-            Remove
-          </StyledButton>
         </>
       ) : (
         <div
@@ -97,6 +94,7 @@ export default function MyDropzone({
           )}
         </div>
       )}
-    </div>
+    </>
+    // </div>
   );
 }
