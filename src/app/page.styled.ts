@@ -5,6 +5,8 @@ export const OverviewContainer = styled.div`
   width: 100%;
   display: flex;
   flex-direction: row;
+  padding-bottom: 2rem;
+  border-bottom: 1px solid var(--border-color);
   flex-wrap: wrap;
   row-gap: 2rem;
   column-gap: 2rem;
