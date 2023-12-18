@@ -6,7 +6,7 @@ import { styled } from '@linaria/react';
 
 import mediaOverview from '~/files/overview/media.png';
 import textOverview from '~/files/overview/text.png';
-import inspiringImage from '~/files/overview/inspiringImage.png';
+import inspiringImage from '~/files/overview/inspiring.png';
 
 const overviewImages = {
   'Text template': textOverview,
