@@ -17,10 +17,12 @@ import {
   PreviewContainer,
   PreviewCanvasContainer,
   StyledButton,
+  CopyrightSpan,
 } from './page.styled';
 import { createImage, drawLayout, parseStringIntoLines, reDrawOnCanvas } from './draw';
 import MyDropzone from './DropZone';
 import { revalidatePath } from 'next/cache';
+import Link from 'next/link';
 
 const canvasSize = 1280;
 const imageSize = 330;
@@ -163,6 +165,8 @@ export default function Home() {
     <main
       style={{
         padding: '3rem 0',
+        // paddingBottom: '5rem',
+        position: 'relative',
         display: 'flex',
         flexDirection: 'column',
         rowGap: '2rem',
@@ -299,6 +303,17 @@ export default function Home() {
           </StyledButton>
         </PreviewContainer>
       </HomeContainer>
+      <CopyrightSpan>
+        ©{' '}
+        <Link href="https://github.com/makskornakov" target="_blank">
+          Max Kornakov
+        </Link>
+        ,{' '}
+        <Link href="https://www.mentoringeurope.eu" target="_blank">
+          Mentoring Europe
+        </Link>
+        , 2023
+      </CopyrightSpan>
     </main>
   );
 }

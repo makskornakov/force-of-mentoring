@@ -34,7 +34,10 @@ export const HeadContainer = styled.div`
   justify-content: center;
 
   @media (max-width: 1000px) {
-    padding: 2rem 2rem;
+    padding: 1rem 10%;
+  }
+  @media (max-width: 500px) {
+    padding: 1rem 5%;
   }
 `;
 export const HomeContainer = styled.div`
@@ -121,8 +124,8 @@ export const HomeContainer = styled.div`
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    row-gap: 2rem;
-    padding: 0 2rem;
+    row-gap: 3rem;
+    padding: 2rem 0;
 
     > div {
       width: 80%;
@@ -133,7 +136,7 @@ export const HomeContainer = styled.div`
     row-gap: 3rem;
 
     > div {
-      width: 95%;
+      width: 90%;
     }
   }
 `;
@@ -164,4 +167,27 @@ export const StyledButton = styled.button<{ red?: boolean; green?: boolean; smal
 export const PreviewContainer = styled.div`
   align-items: center;
   min-width: 400px;
+`;
+
+export const CopyrightSpan = styled.span`
+  /* outline: 1px solid red; */
+  font-size: 0.8rem;
+  font-weight: 200;
+  position: absolute;
+  text-align: left;
+  color: var(--secondary-color);
+  bottom: 0.5rem;
+  left: 1rem;
+
+  > a {
+    text-decoration: underline;
+    cursor: pointer;
+    transition-duration: 0.3s;
+    transition-property: color;
+
+    &:hover,
+    &:focus {
+      color: var(--main-color);
+    }
+  }
 `;
