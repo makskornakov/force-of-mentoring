@@ -26,7 +26,8 @@ const userTitleSize = 50;
 const customTextSize = 30;
 const quoteSize = 50;
 
-const editorModes = ['text', 'media'] as const;
+export type EditorMode = 'text' | 'media';
+const editorModes = ['text', 'media'] as EditorMode[];
 
 export default function Home() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -37,7 +38,7 @@ export default function Home() {
   const [quoteText, setQuoteText] = useState<string>('text of the quote');
   const [parsedQuoteText, setParsedQuoteText] = useState<string[]>(['text of the quote']);
 
-  const [editingMode, setEditingMode] = useState<(typeof editorModes)[number]>('text');
+  const [editingMode, setEditingMode] = useState<EditorMode>(editorModes[0]);
   // media
   const [selectedImage, setSelectedImage] = useState<HTMLImageElement | undefined>(undefined);
   const [selectedImageSrc, setSelectedImageSrc] = useState<string | undefined>(undefined);
@@ -91,11 +92,12 @@ export default function Home() {
         imageSize,
         titleSize,
         quoteSize,
+        editingMode,
       );
       setCtx(ctx);
       console.log('ctx', ctx);
     }
-  }, [canvasRef, loadedImages.butterfly, loadedImages.line1, loadedImages.watermark]);
+  }, [canvasRef, editingMode, loadedImages.butterfly, loadedImages.line1, loadedImages.watermark]);
 
   const reDraw = useMemo(
     () =>
@@ -119,8 +121,9 @@ export default function Home() {
           quote,
           selectedImageSrc,
           selectedImageSize,
+          editMode: editingMode,
         }),
-    [ctx, loadedImages],
+    [ctx, editingMode, loadedImages],
   );
   // update selected image when new src is received
 
@@ -218,22 +221,6 @@ export default function Home() {
                   }}
                 />
               </label>
-              <label>
-                <h3>Quote</h3>
-                <textarea
-                  style={{
-                    height: '4.5rem',
-                  }}
-                  value={quoteText}
-                  onChange={(e) => {
-                    const maxLines = 3;
-                    const lines = parseStringIntoLines(e.target.value, 40);
-                    if (lines.length > maxLines) return;
-                    setParsedQuoteText(lines);
-                    setQuoteText(e.target.value);
-                  }}
-                />
-              </label>
             </>
           ) : (
             <>
@@ -267,6 +254,22 @@ export default function Home() {
               )}
             </>
           )}
+          <label>
+            <h3>Quote</h3>
+            <textarea
+              style={{
+                height: '4.5rem',
+              }}
+              value={quoteText}
+              onChange={(e) => {
+                const maxLines = 3;
+                const lines = parseStringIntoLines(e.target.value, 40);
+                if (lines.length > maxLines) return;
+                setParsedQuoteText(lines);
+                setQuoteText(e.target.value);
+              }}
+            />
+          </label>
         </div>
         <PreviewContainer>
           <h2>Preview</h2>

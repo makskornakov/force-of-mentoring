@@ -1,3 +1,5 @@
+import { EditorMode } from './page';
+
 export function drawLayout(
   ctx: CanvasRenderingContext2D,
   line1: HTMLImageElement,
@@ -6,6 +8,7 @@ export function drawLayout(
   logoSize: number,
   titleSize: number,
   quoteSize: number,
+  editMode: EditorMode,
 ) {
   const canvasSize = ctx.canvas.width;
   ctx.clearRect(0, 0, canvasSize, canvasSize);
@@ -74,6 +77,7 @@ export function reDrawOnCanvas({
   quote,
   selectedImageSrc,
   selectedImageSize,
+  editMode,
 }: {
   ctx: CanvasRenderingContext2D | undefined;
   loadedImages: LoadedImages;
@@ -87,6 +91,7 @@ export function reDrawOnCanvas({
   quote: string[];
   selectedImageSrc?: string;
   selectedImageSize?: number;
+  editMode: EditorMode;
 }) {
   if (!ctx) return;
   const canvasSize = ctx.canvas.width;
@@ -105,6 +110,7 @@ export function reDrawOnCanvas({
     imageSize,
     titleSize,
     quoteSize,
+    editMode,
   );
 
   // draw user image
@@ -129,40 +135,44 @@ export function reDrawOnCanvas({
       );
     };
   }
+  if (editMode === 'text') {
+    ctx.fillStyle = '#2AB09A';
+    ctx.font = `${userTitleSize}px New Sun`;
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(userTitle.toLocaleUpperCase(), canvasSize / 2, canvasSize / 1.9);
+    // letter spacing
 
-  ctx.fillStyle = '#2AB09A';
-  ctx.font = `${userTitleSize}px New Sun`;
-  ctx.textAlign = 'center';
-  ctx.textBaseline = 'middle';
-  ctx.fillText(userTitle.toLocaleUpperCase(), canvasSize / 2, canvasSize / 1.9);
-  // letter spacing
+    const minUserTitleLength = 350;
+    const userTitleLength = Math.max(userTitleSize * userTitle.length * 0.45, minUserTitleLength);
 
-  const minUserTitleLength = 350;
-  const userTitleLength = Math.max(userTitleSize * userTitle.length * 0.45, minUserTitleLength);
+    ctx.drawImage(
+      loadedImages.line2,
+      canvasSize / 2 - userTitleLength / 2,
+      canvasSize / 1.9 + userTitleSize * 0.6,
+      userTitleLength,
+      15,
+    );
 
-  ctx.drawImage(
-    loadedImages.line2,
-    canvasSize / 2 - userTitleLength / 2,
-    canvasSize / 1.9 + userTitleSize * 0.6,
-    userTitleLength,
-    15,
-  );
-
-  ctx.fillStyle = '#1C2435';
-  ctx.font = `${customTextSize}px Inter`;
-  ctx.textAlign = 'center';
-  ctx.textBaseline = 'middle';
-  customText?.forEach((line, index) => {
-    ctx.fillText(line, canvasSize / 2, canvasSize / 1.68 + customTextSize * 1.3 * index);
-  });
-
+    ctx.fillStyle = '#1C2435';
+    ctx.font = `${customTextSize}px Inter`;
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    customText?.forEach((line, index) => {
+      ctx.fillText(line, canvasSize / 2, canvasSize / 1.68 + customTextSize * 1.3 * index);
+    });
+  }
+  if (quote.length === 0) return;
   ctx.fillStyle = '#545454';
   ctx.font = `${quoteSize}px Gaegu`;
   ctx.textAlign = 'center';
   ctx.textBaseline = 'middle';
   // draw under the main text, so we need to know how many lines we have
   const linesAmount = customText?.length || 0;
-  const quoteTextY = canvasSize / 1.68 + customTextSize * 1.3 * linesAmount + quoteSize;
+  const quoteTextY =
+    editMode === 'text'
+      ? canvasSize / 1.68 + customTextSize * 1.3 * linesAmount + quoteSize
+      : canvasSize - titleSize * Math.sqrt(Math.max(quote.length, 1)) * 1.3;
 
   quote?.forEach((line, index) => {
     ctx.fillText(line, canvasSize / 2, quoteTextY + quoteSize * index);
@@ -177,6 +187,8 @@ export function reDrawOnCanvas({
 
   const quoteIconSize = 40;
   const iconX = canvasSize / 2 - quoteTextLength - quoteIconSize / 2;
+  console.log('quoteTextLength', quote.length);
+  const quoteTextYSize = ((Math.max(quote.length, 1) - 1) / 2) * quoteSize;
 
   ctx.save();
   ctx.translate(canvasSize / 2, canvasSize / 2);
@@ -185,7 +197,7 @@ export function reDrawOnCanvas({
   ctx.drawImage(
     loadedImages.quoteIcon,
     canvasSize - iconX - quoteIconSize,
-    canvasSize - quoteTextY - quoteIconSize / 2 - ((quote?.length - 1) / 2) * quoteSize,
+    canvasSize - quoteTextY - quoteIconSize / 2 - quoteTextYSize,
     quoteIconSize,
     quoteIconSize,
   );
@@ -194,7 +206,7 @@ export function reDrawOnCanvas({
   ctx.drawImage(
     loadedImages.quoteIcon,
     canvasSize - iconX - quoteIconSize,
-    quoteTextY - quoteIconSize / 2 + ((quote?.length - 1) / 2) * quoteSize,
+    quoteTextY - quoteIconSize / 2 + quoteTextYSize,
     quoteIconSize,
     quoteIconSize,
   );
