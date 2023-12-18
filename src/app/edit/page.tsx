@@ -178,7 +178,14 @@ export default function Home() {
   }
 
   useEffect(() => {
-    reDraw(userTitle, parsedCustomText, parsedQuoteText, selectedImageSize, selectedImage);
+    // filter empty lines
+    reDraw(
+      userTitle,
+      parsedCustomText.filter((line) => line),
+      parsedQuoteText.filter((line) => line),
+      selectedImageSize,
+      selectedImage,
+    );
   }, [userTitle, reDraw, parsedCustomText, parsedQuoteText, selectedImageSize, selectedImage]);
 
   return (
