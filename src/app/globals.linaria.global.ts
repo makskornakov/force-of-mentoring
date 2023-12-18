@@ -27,12 +27,14 @@ export const globals = css`
       --secondary-color: #b9b9b9;
       --main-color: #111111;
       --border-color: #777;
+      --active-color: #2a5d82;
 
       ${media.prefersColorSchemeDark} {
         --background-color: #151515;
         --secondary-color: #888;
         --main-color: #f5f5f5;
         --border-color: #a1a1a1;
+        --active-color: #4689ba;
       }
     }
 
