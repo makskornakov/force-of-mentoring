@@ -55,7 +55,7 @@ export const HomePageContainer = styled.div`
   align-items: center;
 
   > h1 {
-    font-size: 3rem;
+    font-size: 3.25rem;
     color: #a18bf8;
     font-family: 'Poor Story', sans-serif;
   }
@@ -116,7 +116,10 @@ export const HomePageContainer = styled.div`
     }
   }
 
-  @media (max-width: 768px) {
+  @media (max-width: 1000px) {
+    width: 80%;
+  }
+  @media (max-width: 500px) {
     width: 90%;
   }
 `;
