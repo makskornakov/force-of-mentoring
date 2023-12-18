@@ -3,12 +3,27 @@ import { CopyrightSpan, HeadContainer } from './edit/page.styled';
 import './globals.linaria.global';
 import { Inter } from 'next/font/google';
 import LinksList from '~/components/LinksNav';
+import { SpeedInsights } from '@vercel/speed-insights/next';
 
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata = {
   title: 'Force Of Mentoring',
   description: 'Force of Mentoring marketing campaign by Mentoring Europe',
+  // icons: [
+  //   {
+  //     rel: 'icon',
+  //     href: '/favicon-white.ico',
+  //     url: '/favicon-white.ico',
+  //     media: '(prefers-color-scheme: dark)',
+  //   },
+  //   {
+  //     rel: 'icon',
+  //     href: '/favicon-black.ico',
+  //     url: '/favicon-black.ico',
+  //     media: '(prefers-color-scheme: light)',
+  //   },
+  // ],
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -46,6 +61,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             , 2023
           </CopyrightSpan>
         </main>
+        <SpeedInsights />
       </body>
     </html>
   );
