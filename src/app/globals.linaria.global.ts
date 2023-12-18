@@ -24,11 +24,13 @@ export const globals = css`
 
     :root {
       --background-color: #f5f5f5;
+      --secondary-color: #b9b9b9;
       --main-color: #111111;
-      --border-color: #a1a1a1;
+      --border-color: #777;
 
       ${media.prefersColorSchemeDark} {
         --background-color: #111111;
+        --secondary-color: #888;
         --main-color: #f5f5f5;
         --border-color: #a1a1a1;
       }

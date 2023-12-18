@@ -78,7 +78,7 @@ export default function MyDropzone({
           style={{
             border: '1px dashed',
             borderColor:
-              isDragActive || isFocused || isFileDialogActive ? '#2196f3' : 'var(--border-color)',
+              isDragActive || isFocused || isFileDialogActive ? '#4cd800' : 'var(--border-color)',
             padding: '1rem',
             transition: 'border-color 0.3s',
             display: 'flex',

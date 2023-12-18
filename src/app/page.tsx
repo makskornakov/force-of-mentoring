@@ -1,5 +1,6 @@
 'use client';
-import { useRef, useState, useEffect, useMemo } from 'react';
+import { useRef, useState, useEffect, useMemo, use } from 'react';
+import { useSearchParams } from 'next/navigation';
 
 import butterfly from '../files/butterfly1.svg';
 import line1 from '../files/line1.svg';
@@ -19,6 +20,7 @@ import {
 } from './page.styled';
 import { createImage, drawLayout, parseStringIntoLines, reDrawOnCanvas } from './draw';
 import MyDropzone from './DropZone';
+import { revalidatePath } from 'next/cache';
 
 const canvasSize = 1280;
 const imageSize = 330;
@@ -39,7 +41,14 @@ export default function Home() {
   const [quoteText, setQuoteText] = useState<string>('text of the quote');
   const [parsedQuoteText, setParsedQuoteText] = useState<string[]>(['text of the quote']);
 
-  const [editingMode, setEditingMode] = useState<EditorMode>(editorModes[0]);
+  const searchParams = useSearchParams();
+  // const router = useRouter();
+
+  const [editingMode, setEditingMode] = useState<EditorMode>(
+    searchParams.has('mode') && editorModes.includes(searchParams.get('mode') as EditorMode)
+      ? (searchParams.get('mode') as EditorMode)
+      : 'text',
+  );
   // media
   const [selectedImage, setSelectedImage] = useState<HTMLImageElement | undefined>(undefined);
   const [selectedImageSrc, setSelectedImageSrc] = useState<string | undefined>(undefined);
@@ -128,6 +137,11 @@ export default function Home() {
   );
   // update selected image when new src is received
 
+  // redirect with ?mode=mode when mode changes
+  // useEffect(() => {
+  //   redirect(`?mode=${editingMode}`);
+  // }, [editingMode]);
+
   useEffect(() => {
     if (!selectedImageSrc) {
       setSelectedImage(undefined);
@@ -181,17 +195,8 @@ export default function Home() {
                 key={mode}
                 onClick={() => setEditingMode(mode)}
                 style={{
-                  //   fontSize: '1rem',
-                  //   cursor: 'pointer',
-                  //   fontWeight: '400',
-                  //   padding: '0.25rem 0.5rem',
-                  //   outline: 'none',
-                  //   borderRadius: '0.25rem',
-                  //   border: '1px solid var(--border-color)',
-                  //   backgroundColor: 'transparent',
-                  borderColor: editingMode === mode ? 'white' : '',
-                  color: editingMode === mode ? 'white' : '',
-                  // opacity: editingMode === mode ? 1 : 0.5,
+                  borderColor: editingMode === mode ? 'var(--main-color)' : '',
+                  color: editingMode === mode ? 'var(--main-color)' : '',
                 }}
               >
                 {mode.charAt(0).toUpperCase() + mode.slice(1)}
@@ -234,8 +239,8 @@ export default function Home() {
                   <h3>Image size</h3>
                   <input
                     type="range"
-                    min={10}
-                    max={50}
+                    min={20}
+                    max={60}
                     value={selectedImageSize}
                     onChange={(e) => setSelectedImageSize(+e.target.value)}
                   />

@@ -77,6 +77,7 @@ export const HomeContainer = styled.div`
     outline: none;
     resize: none;
     font-weight: 200;
+    font-family: 'Inter', sans-serif;
     font-size: 1rem;
     transition-duration: 0.2s;
     transition-property: border-color;
@@ -84,6 +85,35 @@ export const HomeContainer = styled.div`
     &:focus,
     &:active {
       border: 1px solid var(--main-color);
+    }
+  }
+
+  /* input range */
+  input[type='range'] {
+    /* min-width: 100px; */
+    appearance: none;
+    width: 100%;
+    height: 0.4rem;
+    background: var(--secondary-color);
+    outline: none;
+    border-radius: 0.25rem;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+
+    &::-webkit-slider-thumb {
+      appearance: none;
+      width: 1rem;
+      height: 1rem;
+      background-color: var(--border-color);
+      border-radius: 50%;
+      transition: background-color 0.2s ease-in-out;
+
+      &:hover,
+      &:focus,
+      &:active {
+        background-color: red;
+      }
     }
   }
 
@@ -125,31 +155,13 @@ export const StyledButton = styled.button<{ red?: boolean; green?: boolean; smal
 
   &:hover,
   &:focus {
-    border-color: ${({ red, green }) => (red ? '#e60000' : green ? '#03ba00' : 'white')};
-    color: #fff;
+    border-color: ${({ red, green }) =>
+      red ? '#e60000' : green ? '#03ba00' : 'var(--main-color)'};
+    color: var(--main-color);
     /* opacity: 1; */
   }
 `;
 export const PreviewContainer = styled.div`
   align-items: center;
   min-width: 400px;
-
-  /* > button {
-    background-color: transparent;
-    padding: 0.5rem 1rem;
-    border-radius: 0.5rem;
-    border: 1px solid;
-    border-color: var(--border-color);
-    outline: none;
-    color: var(--main-color);
-    font-size: 1rem;
-    cursor: pointer;
-    transition-duration: 0.2s;
-    transition-property: border-color;
-
-    &:hover,
-    &:focus {
-      border-color: #03ba00;
-    }
-  } */
 `;
