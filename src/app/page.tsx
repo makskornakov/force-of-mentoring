@@ -264,19 +264,18 @@ export default function Home() {
                 }}
               >
                 <h3>Image</h3>
-                {presets.find((preset) => preset.src === selectedImageSrc) ? null : (
-                  <MyDropzone selectedImage={selectedImage} setImage={setSelectedImageSrc} />
-                )}
+                {/* <h4>Select from presets</h4> */}
                 {(!selectedImageSrc ||
                   presets.find((preset) => preset.src === selectedImageSrc)) && (
                   <>
-                    <h4
+                    {/* <h4
                       style={{
-                        marginTop: '.5rem',
+                        marginTop: '1rem',
+                        marginBottom: '.25rem',
                       }}
                     >
                       Or choose from presets:
-                    </h4>
+                    </h4> */}
                     <div
                       style={{
                         // outline: '1px solid red',
@@ -286,6 +285,9 @@ export default function Home() {
                         flexDirection: 'row',
                         rowGap: '1.5rem',
                         columnGap: '1.5rem',
+                        padding: '1rem 0',
+                        borderTop: '1px solid var(--border-color)',
+                        borderBottom: '1px solid var(--border-color)',
                         // justifyContent: 'center',
                         // alignItems: 'center',
                       }}
@@ -331,12 +333,30 @@ export default function Home() {
                   </>
                 )}
               </div>
+              <div
+                style={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  rowGap: '0.5rem',
+                  alignItems: 'flex-start',
+                  width: '100%',
+                }}
+              >
+                {presets.find((preset) => preset.src === selectedImageSrc) ? null : (
+                  <>
+                    <h4>Or upload your own:</h4>
 
-              {selectedImageSrc && (
-                <StyledButton onClick={() => setSelectedImageSrc(undefined)} red small>
-                  Remove
-                </StyledButton>
-              )}
+                    <MyDropzone selectedImage={selectedImage} setImage={setSelectedImageSrc} />
+                  </>
+                )}
+
+                {selectedImageSrc && (
+                  <StyledButton onClick={() => setSelectedImageSrc(undefined)} red small>
+                    Remove
+                  </StyledButton>
+                )}
+              </div>
+
               {selectedImage && (
                 <label>
                   <h3>Image size</h3>
