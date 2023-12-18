@@ -4,7 +4,7 @@ export const PreviewCanvasContainer = styled.div`
   width: 60%;
   aspect-ratio: 1;
   > canvas {
-    outline: 1px solid var(--main-color);
+    /* outline: 1px solid var(--main-color); */
 
     width: 100%;
     aspect-ratio: 1;
@@ -23,6 +23,7 @@ export const PreviewCanvasContainer = styled.div`
     /* width: 95%; */
   }
 `;
+
 export const HeadContainer = styled.div`
   border-bottom: 1px solid var(--main-color);
   border-top: 1px solid var(--main-color);
@@ -31,6 +32,10 @@ export const HeadContainer = styled.div`
   flex-direction: column;
   row-gap: 0.5rem;
   justify-content: center;
+
+  @media (max-width: 1000px) {
+    padding: 2rem 2rem;
+  }
 `;
 export const HomeContainer = styled.div`
   /* outline: 1px solid red; */
