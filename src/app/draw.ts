@@ -198,7 +198,7 @@ export function reDrawOnCanvas({
 
   const quoteIconSize = 40;
   const iconX = canvasSize / 2 - quoteTextLength - quoteIconSize / 2;
-  console.log('quoteTextLength', quote.length);
+  // console.log('quoteTextLength', quote.length);
   const quoteTextYSize = ((Math.max(quote.length, 1) - 1) / 2) * quoteSize;
 
   ctx.save();

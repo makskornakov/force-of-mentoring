@@ -91,7 +91,7 @@ export default function Home() {
         }
       };
     }
-    console.log('loadedImages', loadedImages);
+    // console.log('loadedImages', loadedImages);
 
     // load presets
     const presets = {
@@ -140,7 +140,7 @@ export default function Home() {
         editingMode,
       );
       setCtx(ctx);
-      console.log('ctx', ctx);
+      // console.log('ctx', ctx);
     }
   }, [canvasRef, editingMode, loadedImages.butterfly, loadedImages.line1, loadedImages.watermark]);
 
@@ -389,7 +389,7 @@ export default function Home() {
             onClick={() => {
               if (canvasRef.current) {
                 const dataUrl = canvasRef.current.toDataURL('image/png');
-                console.log('dataUrl', dataUrl);
+                // console.log('dataUrl', dataUrl);
                 const a = document.createElement('a');
                 a.href = dataUrl;
                 a.download = `${userTitle || 'title'}.png`;
