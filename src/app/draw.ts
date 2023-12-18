@@ -91,7 +91,7 @@ export function reDrawOnCanvas({
   userTitle,
   customText,
   quote,
-  selectedImageSrc,
+  selectedImage,
   selectedImageSize,
   editMode,
 }: {
@@ -105,7 +105,7 @@ export function reDrawOnCanvas({
   userTitle: string;
   customText: string[];
   quote: string[];
-  selectedImageSrc?: string;
+  selectedImage?: HTMLImageElement;
   selectedImageSize?: number;
   editMode: EditorMode;
 }) {
@@ -116,7 +116,7 @@ export function reDrawOnCanvas({
     if (!loadedImages[key].complete) return;
   });
 
-  console.log('reDraw', loadedImages);
+  console.log('reDraw', loadedImages, selectedImage);
 
   drawLayout(
     ctx,
@@ -131,25 +131,21 @@ export function reDrawOnCanvas({
 
   // draw user image
 
-  if (selectedImageSrc && editMode === 'media') {
-    console.log('file', selectedImageSrc);
+  if (selectedImage && editMode === 'media') {
+    console.log('file', selectedImage);
 
-    const userSelectedImage = new Image();
-    userSelectedImage.src = selectedImageSrc;
-    userSelectedImage.onload = () => {
-      const userImagePercent = selectedImageSize || 50;
-      const aspectRatio = userSelectedImage.height / userSelectedImage.width;
-      const userImageSizeY = canvasSize * (userImagePercent / 100);
-      const userImageSizeX = userImageSizeY / aspectRatio;
+    const userImagePercent = selectedImageSize || 50;
+    const aspectRatio = selectedImage.height / selectedImage.width;
+    const userImageSizeY = canvasSize * (userImagePercent / 100);
+    const userImageSizeX = userImageSizeY / aspectRatio;
 
-      ctx.drawImage(
-        userSelectedImage,
-        canvasSize / 2 - userImageSizeX / 2,
-        canvasSize / 2 - userImageSizeY / 2.5,
-        userImageSizeX,
-        userImageSizeY,
-      );
-    };
+    ctx.drawImage(
+      selectedImage,
+      canvasSize / 2 - userImageSizeX / 2,
+      canvasSize / 2 - userImageSizeY / 2.5,
+      userImageSizeX,
+      userImageSizeY,
+    );
   }
   if (editMode === 'text') {
     ctx.fillStyle = '#2AB09A';
@@ -157,7 +153,6 @@ export function reDrawOnCanvas({
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
     ctx.fillText(userTitle.toLocaleUpperCase(), canvasSize / 2, canvasSize / 1.9);
-    // letter spacing
 
     const minUserTitleLength = 350;
     const userTitleLength = Math.max(userTitleSize * userTitle.length * 0.45, minUserTitleLength);
@@ -228,9 +223,10 @@ export function reDrawOnCanvas({
   );
 }
 
-export const createImage = (src: string) => {
+export const createImage = (src: string, alt?: string) => {
   const image = new Image();
   image.src = src;
+  image.alt = alt || '';
   return image;
 };
 

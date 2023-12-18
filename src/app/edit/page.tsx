@@ -9,25 +9,12 @@ import quoteIcon from '~/files/quote.svg';
 import watermark from '~/files/watermark.svg';
 
 // presets
-// import mentoringImpact from '../files/presets/mentoringImpact.svg';
+import mentoringImpact from '~/files/presets/mentoringImpact.svg';
+import mentoringBenefits from '~/files/presets/mentoringBenefits.svg';
+import preset3 from '~/files/presets/preset3.svg';
 
 import exampleImage from '../files/example2.png';
 import NextImage from 'next/image';
-
-const presets = [
-  {
-    name: 'Mentoring Impact',
-    src: '/presets/mentoringImpact.svg',
-  },
-  {
-    name: 'Mentoring Benefits for Youth',
-    src: '/presets/mentoringBenefits.svg',
-  },
-  {
-    name: 'Preset 3',
-    src: '/presets/preset3.svg',
-  },
-];
 
 import {
   HeadContainer,
@@ -42,7 +29,6 @@ import {
 } from './page.styled';
 import { createImage, drawLayout, parseStringIntoLines, reDrawOnCanvas } from '../draw';
 import MyDropzone from '../DropZone';
-import { revalidatePath } from 'next/cache';
 import Link from 'next/link';
 
 const canvasSize = 1280;
@@ -54,6 +40,7 @@ const quoteSize = 50;
 
 export type EditorMode = 'text' | 'media';
 const editorModes = ['text', 'media'] as EditorMode[];
+const presetOrder = ['Mentoring Impact', 'Mentoring Benefits for Youth', 'Preset 3'] as const;
 
 export default function Home() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -74,11 +61,12 @@ export default function Home() {
   );
   // media
   const [selectedImage, setSelectedImage] = useState<HTMLImageElement | undefined>(undefined);
-  const [selectedImageSrc, setSelectedImageSrc] = useState<string | undefined>(undefined);
+  // const [lastSelectedImageSrc, setLastSelectedImageSrc] = useState<string | undefined>(undefined);
+  // const [selectedImageSrc, setSelectedImageSrc] = useState<string | undefined>(undefined);
   const [selectedImageSize, setSelectedImageSize] = useState<number>(40);
 
   const [loadedImages, setLoadedImages] = useState<Record<string, HTMLImageElement>>({});
-  // const [loadedPresets, setLoadedPresets] = useState<Record<string, HTMLImageElement>>({});
+  const [loadedPresets, setLoadedPresets] = useState<Record<string, HTMLImageElement>>({});
 
   // load images
   useEffect(() => {
@@ -89,6 +77,7 @@ export default function Home() {
       quoteIcon: createImage(quoteIcon.src),
       watermark: createImage(watermark.src),
     };
+
     const loadedImages: Record<string, HTMLImageElement> = {};
     const imagesAmount = Object.keys(images).length;
     let loadedImagesAmount = 0;
@@ -99,6 +88,28 @@ export default function Home() {
         loadedImagesAmount++;
         if (loadedImagesAmount === imagesAmount) {
           setLoadedImages(loadedImages);
+        }
+      };
+    }
+    console.log('loadedImages', loadedImages);
+
+    // load presets
+    const presets = {
+      preset3: createImage(preset3.src, 'Preset 3'),
+      mentoringImpact: createImage(mentoringImpact.src, 'Mentoring Impact'),
+      mentoringBenefits: createImage(mentoringBenefits.src, 'Mentoring Benefits for Youth'),
+    };
+
+    const loadedPresets: Record<string, HTMLImageElement> = {};
+    const presetsAmount = Object.keys(presets).length;
+    let loadedPresetsAmount = 0;
+    for (const key in presets) {
+      const preset = presets[key as keyof typeof presets];
+      preset.onload = () => {
+        loadedPresets[preset.alt] = preset;
+        loadedPresetsAmount++;
+        if (loadedPresetsAmount === presetsAmount) {
+          setLoadedPresets(loadedPresets);
         }
       };
     }
@@ -139,7 +150,7 @@ export default function Home() {
         userTitle: string,
         customText: string[],
         quote: string[],
-        selectedImageSrc?: string | undefined,
+        userSelectedImage?: HTMLImageElement | undefined,
         selectedImageSize?: number,
       ) =>
         reDrawOnCanvas({
@@ -153,35 +164,22 @@ export default function Home() {
           userTitle,
           customText,
           quote,
-          selectedImageSrc,
+          selectedImage: userSelectedImage,
           selectedImageSize,
           editMode: editingMode,
         }),
     [ctx, editingMode, loadedImages],
   );
-  // update selected image when new src is received
 
-  // redirect with ?mode=mode when mode changes
-  // useEffect(() => {
-  //   redirect(`?mode=${editingMode}`);
-  // }, [editingMode]);
-
-  useEffect(() => {
-    if (!selectedImageSrc) {
-      setSelectedImage(undefined);
-      return;
-    }
-    const image = createImage(selectedImageSrc);
-    // image.src = selectedImageSrc;
-    image.onload = () => {
-      setSelectedImage(image);
-    };
-  }, [selectedImageSrc]);
+  function setNewImageAndRedraw(image: HTMLImageElement | undefined) {
+    setSelectedImage(image);
+    // ! OTher wise it will not update on drop
+    reDraw(userTitle, parsedCustomText, parsedQuoteText, image, selectedImageSize);
+  }
 
   useEffect(() => {
-    // console.log('selectedImage', selectedImage);
-    reDraw(userTitle, parsedCustomText, parsedQuoteText, selectedImageSrc, selectedImageSize);
-  }, [userTitle, reDraw, parsedCustomText, parsedQuoteText, selectedImageSrc, selectedImageSize]);
+    reDraw(userTitle, parsedCustomText, parsedQuoteText, selectedImage, selectedImageSize);
+  }, [userTitle, reDraw, parsedCustomText, parsedQuoteText, selectedImageSize, selectedImage]);
 
   return (
     <>
@@ -258,8 +256,7 @@ export default function Home() {
               >
                 <h3>Image</h3>
                 {/* <h4>Select from presets</h4> */}
-                {(!selectedImageSrc ||
-                  presets.find((preset) => preset.src === selectedImageSrc)) && (
+                {(!selectedImage || loadedPresets.hasOwnProperty(selectedImage.alt)) && (
                   <>
                     {/* <h4
                       style={{
@@ -270,35 +267,42 @@ export default function Home() {
                       Or choose from presets:
                     </h4> */}
                     <AllPresetsContainer>
-                      {presets.map((preset) => (
-                        <PresetLabelWrapper
-                          key={preset.name}
-                          onClick={() => {
-                            setSelectedImageSrc(preset.src);
-                          }}
-                        >
-                          <PresetImageContainer selected={selectedImageSrc === preset.src}>
-                            <NextImage
-                              src={preset.src}
-                              fill
-                              alt={preset.name}
-                              quality={20}
-                              style={{
-                                padding: '.5rem',
-                                objectFit: 'contain',
+                      {presetOrder.map(
+                        (presetName) =>
+                          // {Object.values(loadedPresets).map(
+                          //   (preset) =>
+                          loadedPresets[presetName]?.complete && (
+                            <PresetLabelWrapper
+                              key={loadedPresets[presetName].alt}
+                              onClick={() => {
+                                setSelectedImage(loadedPresets[presetName]);
                               }}
-                            />
-                          </PresetImageContainer>
-                          <h4
-                            style={{
-                              width: '8rem',
-                              textAlign: 'center',
-                            }}
-                          >
-                            {preset.name}
-                          </h4>
-                        </PresetLabelWrapper>
-                      ))}
+                            >
+                              <PresetImageContainer
+                                selected={selectedImage?.alt === loadedPresets[presetName].alt}
+                              >
+                                <NextImage
+                                  src={loadedPresets[presetName].src}
+                                  fill
+                                  alt={loadedPresets[presetName].alt}
+                                  quality={20}
+                                  style={{
+                                    padding: '.5rem',
+                                    objectFit: 'contain',
+                                  }}
+                                />
+                              </PresetImageContainer>
+                              <h4
+                                style={{
+                                  width: '8rem',
+                                  textAlign: 'center',
+                                }}
+                              >
+                                {loadedPresets[presetName].alt}
+                              </h4>
+                            </PresetLabelWrapper>
+                          ),
+                      )}
                     </AllPresetsContainer>
                   </>
                 )}
@@ -312,16 +316,15 @@ export default function Home() {
                   width: '100%',
                 }}
               >
-                {presets.find((preset) => preset.src === selectedImageSrc) ? null : (
+                {(!selectedImage || !loadedPresets[selectedImage.alt]) && (
                   <>
-                    <h4>{!selectedImageSrc ? 'Or upload your own:' : 'Uploaded image:'}</h4>
-
-                    <MyDropzone selectedImage={selectedImage} setImage={setSelectedImageSrc} />
+                    <h4>{!selectedImage ? 'Or upload your own:' : 'Uploaded image:'}</h4>
+                    <MyDropzone selectedImage={selectedImage} setImage={setNewImageAndRedraw} />
                   </>
                 )}
 
-                {selectedImageSrc && (
-                  <StyledButton onClick={() => setSelectedImageSrc(undefined)} red small>
+                {selectedImage && (
+                  <StyledButton onClick={() => setSelectedImage(undefined)} red small>
                     Remove
                   </StyledButton>
                 )}

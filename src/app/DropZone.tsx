@@ -1,14 +1,12 @@
 import { useDropzone } from 'react-dropzone';
 import NextImage from 'next/image';
 import { styled } from '@linaria/react';
-import { revalidatePath } from 'next/cache';
-import { StyledButton } from './edit/page.styled';
 
 export default function MyDropzone({
   setImage,
   selectedImage,
 }: {
-  setImage: (imageSrc: string | undefined) => void;
+  setImage: (imageSrc: HTMLImageElement | undefined) => void;
   selectedImage?: HTMLImageElement;
 }) {
   const { isFileDialogActive, isFocused, isDragActive, getRootProps, getInputProps } = useDropzone({
@@ -18,35 +16,18 @@ export default function MyDropzone({
 
     maxFiles: 1,
     multiple: false,
-    onDrop: async (file) => {
-      setImage(URL.createObjectURL(file[0]));
+    onDrop: (file) => {
+      const image = new Image();
+      image.src = URL.createObjectURL(file[0]);
+      image.alt = file[0].name;
+
+      image.onload = () => {
+        setImage(image);
+      };
     },
-
-    // onDropAccepted: async (files, event) => {
-
-    // },
-    // ? somehow this fixes when you press the button in the dialog window (usually it stuck the update)
-    // onDropAccepted: (file) => {
-    // console.log('drop accepted', file);
-    // const image = new Image();
-    // image.src = URL.createObjectURL(file[0]);
-    // image.onload = () => {
-    //   setImage(image);
-    // };
-    // },
   });
 
   return (
-    // <div
-    //   style={{
-    //     display: 'flex',
-    //     flexDirection: 'column',
-    //     width: '100%',
-    //     rowGap: '0.5rem',
-    //     alignItems: 'flex-start',
-    //   }}
-    // >
-    //   <h3>Image</h3>
     <>
       {selectedImage ? (
         <>
@@ -72,11 +53,6 @@ export default function MyDropzone({
       ) : (
         <StyledDropzone
           {...getRootProps()}
-          // style={{
-          //   borderColor:
-          //     isDragActive || isFocused || isFileDialogActive ? '#a18bf8' : 'var(--border-color)',
-          // }}
-
           focused={isDragActive || isFocused || isFileDialogActive}
         >
           <input {...getInputProps()} />
@@ -88,7 +64,6 @@ export default function MyDropzone({
         </StyledDropzone>
       )}
     </>
-    // </div>
   );
 }
 const StyledDropzone = styled.div<{ focused?: boolean }>`
