@@ -17,6 +17,7 @@ import {
   PreviewCanvasContainer,
 } from './page.styled';
 import { createImage, drawLayout, parseStringIntoLines, reDrawOnCanvas } from './draw';
+import MyDropzone from './DropZone';
 
 const canvasSize = 1280;
 const imageSize = 330;
@@ -24,6 +25,8 @@ const titleSize = 100;
 const userTitleSize = 50;
 const customTextSize = 30;
 const quoteSize = 50;
+
+const editorModes = ['text', 'media'] as const;
 
 export default function Home() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -33,6 +36,12 @@ export default function Home() {
   const [parsedCustomText, setParsedCustomText] = useState<string[]>(['Any text']);
   const [quoteText, setQuoteText] = useState<string>('text of the quote');
   const [parsedQuoteText, setParsedQuoteText] = useState<string[]>(['text of the quote']);
+
+  const [editingMode, setEditingMode] = useState<(typeof editorModes)[number]>('text');
+  // media
+  const [selectedImage, setSelectedImage] = useState<HTMLImageElement | undefined>(undefined);
+  const [selectedImageSrc, setSelectedImageSrc] = useState<string | undefined>(undefined);
+  const [selectedImageSize, setSelectedImageSize] = useState<number>(40);
 
   const [loadedImages, setLoadedImages] = useState<Record<string, HTMLImageElement>>({});
 
@@ -89,25 +98,48 @@ export default function Home() {
   }, [canvasRef, loadedImages.butterfly, loadedImages.line1, loadedImages.watermark]);
 
   const reDraw = useMemo(
-    () => (userTitle: string, customText: string[], quote: string[]) =>
-      reDrawOnCanvas({
-        ctx,
-        loadedImages,
-        imageSize,
-        titleSize,
-        userTitleSize,
-        customTextSize,
-        quoteSize,
-        userTitle,
-        customText,
-        quote,
-      }),
+    () =>
+      (
+        userTitle: string,
+        customText: string[],
+        quote: string[],
+        selectedImageSrc?: string | undefined,
+        selectedImageSize?: number,
+      ) =>
+        reDrawOnCanvas({
+          ctx,
+          loadedImages,
+          imageSize,
+          titleSize,
+          userTitleSize,
+          customTextSize,
+          quoteSize,
+          userTitle,
+          customText,
+          quote,
+          selectedImageSrc,
+          selectedImageSize,
+        }),
     [ctx, loadedImages],
   );
+  // update selected image when new src is received
 
   useEffect(() => {
-    reDraw(userTitle, parsedCustomText, parsedQuoteText);
-  }, [userTitle, reDraw, parsedCustomText, parsedQuoteText]);
+    if (!selectedImageSrc) {
+      setSelectedImage(undefined);
+      return;
+    }
+    const image = new Image();
+    image.src = selectedImageSrc;
+    image.onload = () => {
+      setSelectedImage(image);
+    };
+  }, [selectedImageSrc]);
+
+  useEffect(() => {
+    // console.log('selectedImage', selectedImage);
+    reDraw(userTitle, parsedCustomText, parsedQuoteText, selectedImageSrc, selectedImageSize);
+  }, [userTitle, reDraw, parsedCustomText, parsedQuoteText, selectedImageSrc, selectedImageSize]);
 
   return (
     <main
@@ -129,43 +161,112 @@ export default function Home() {
           }}
         >
           <h2>Editor</h2>
-          <label>
-            <h3>Title</h3>
-            <input type="text" value={userTitle} onChange={(e) => setUserTitle(e.target.value)} />
-          </label>
-          <label>
-            <h3>Custom text</h3>
-            <textarea
-              style={{
-                height: '10rem',
-              }}
-              value={customText}
-              onChange={(e) => {
-                const maxLines = 6;
-                const lines = parseStringIntoLines(e.target.value, 70);
-                if (lines.length > maxLines) return;
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'row',
+              alignItems: 'center',
+              columnGap: '1rem',
+              // outline: '1px solid red',
+            }}
+          >
+            <h3>Mode: </h3>
+            {editorModes.map((mode) => (
+              <button
+                key={mode}
+                onClick={() => setEditingMode(mode)}
+                style={{
+                  fontSize: '1rem',
+                  cursor: 'pointer',
+                  fontWeight: '400',
+                  padding: '0.25rem 0.5rem',
+                  outline: 'none',
+                  borderRadius: '0.25rem',
+                  border: '1px solid var(--border-color)',
+                  backgroundColor: 'transparent',
+                  opacity: editingMode === mode ? 1 : 0.5,
+                }}
+              >
+                {mode}
+              </button>
+            ))}
+          </div>
+          {editingMode === 'text' ? (
+            <>
+              <label>
+                <h3>Title</h3>
+                <input
+                  type="text"
+                  value={userTitle}
+                  onChange={(e) => setUserTitle(e.target.value)}
+                />
+              </label>
+              <label>
+                <h3>Custom text</h3>
+                <textarea
+                  style={{
+                    height: '10rem',
+                  }}
+                  value={customText}
+                  onChange={(e) => {
+                    const maxLines = 6;
+                    const lines = parseStringIntoLines(e.target.value, 70);
+                    if (lines.length > maxLines) return;
 
-                setCustomText(e.target.value);
-                setParsedCustomText(lines);
-              }}
-            />
-          </label>
-          <label>
-            <h3>Quote</h3>
-            <textarea
-              style={{
-                height: '4.5rem',
-              }}
-              value={quoteText}
-              onChange={(e) => {
-                const maxLines = 3;
-                const lines = parseStringIntoLines(e.target.value, 40);
-                if (lines.length > maxLines) return;
-                setParsedQuoteText(lines);
-                setQuoteText(e.target.value);
-              }}
-            />
-          </label>
+                    setCustomText(e.target.value);
+                    setParsedCustomText(lines);
+                  }}
+                />
+              </label>
+              <label>
+                <h3>Quote</h3>
+                <textarea
+                  style={{
+                    height: '4.5rem',
+                  }}
+                  value={quoteText}
+                  onChange={(e) => {
+                    const maxLines = 3;
+                    const lines = parseStringIntoLines(e.target.value, 40);
+                    if (lines.length > maxLines) return;
+                    setParsedQuoteText(lines);
+                    setQuoteText(e.target.value);
+                  }}
+                />
+              </label>
+            </>
+          ) : (
+            <>
+              {/* <label>
+                <h3>Image</h3>
+                <input
+                  type="file"
+                  onChange={(e) => {
+                    const file = e.target.files?.[0];
+                    if (!file) return;
+                    const image = new Image();
+                    image.src = URL.createObjectURL(file);
+                    image.onload = () => {
+                      setSelectedImage(image);
+                    };
+                  }}
+                />
+              </label> */}
+              <MyDropzone selectedImage={selectedImage} setImage={setSelectedImageSrc} />
+              {selectedImage && (
+                <label>
+                  <h3>Image size</h3>
+                  <input
+                    type="range"
+                    min={10}
+                    max={50}
+                    value={selectedImageSize}
+                    onChange={(e) => setSelectedImageSize(+e.target.value)}
+                  />
+                </label>
+              )}
+            </>
+          )}
         </div>
         <PreviewContainer>
           <h2>Preview</h2>

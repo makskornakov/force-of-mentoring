@@ -72,6 +72,8 @@ export function reDrawOnCanvas({
   userTitle,
   customText,
   quote,
+  selectedImageSrc,
+  selectedImageSize,
 }: {
   ctx: CanvasRenderingContext2D | undefined;
   loadedImages: LoadedImages;
@@ -83,6 +85,8 @@ export function reDrawOnCanvas({
   userTitle: string;
   customText: string[];
   quote: string[];
+  selectedImageSrc?: string;
+  selectedImageSize?: number;
 }) {
   if (!ctx) return;
   const canvasSize = ctx.canvas.width;
@@ -102,6 +106,29 @@ export function reDrawOnCanvas({
     titleSize,
     quoteSize,
   );
+
+  // draw user image
+
+  if (selectedImageSrc) {
+    console.log('file', selectedImageSrc);
+
+    const userSelectedImage = new Image();
+    userSelectedImage.src = selectedImageSrc;
+    userSelectedImage.onload = () => {
+      const userImagePercent = selectedImageSize || 50;
+      const aspectRatio = userSelectedImage.height / userSelectedImage.width;
+      const userImageSizeY = canvasSize * (userImagePercent / 100);
+      const userImageSizeX = userImageSizeY / aspectRatio;
+
+      ctx.drawImage(
+        userSelectedImage,
+        canvasSize / 2 - userImageSizeX / 2,
+        canvasSize / 2 - userImageSizeY / 2.2,
+        userImageSizeX,
+        userImageSizeY,
+      );
+    };
+  }
 
   ctx.fillStyle = '#2AB09A';
   ctx.font = `${userTitleSize}px New Sun`;
