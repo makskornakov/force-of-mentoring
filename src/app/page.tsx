@@ -23,6 +23,10 @@ const presets = [
     name: 'Mentoring Benefits for Youth',
     src: '/presets/mentoringBenefits.svg',
   },
+  {
+    name: 'Preset 3',
+    src: '/presets/preset3.svg',
+  },
 ];
 
 import {
@@ -165,8 +169,8 @@ export default function Home() {
       setSelectedImage(undefined);
       return;
     }
-    const image = new Image();
-    image.src = selectedImageSrc;
+    const image = createImage(selectedImageSrc);
+    // image.src = selectedImageSrc;
     image.onload = () => {
       setSelectedImage(image);
     };
@@ -287,7 +291,7 @@ export default function Home() {
                         columnGap: '1.5rem',
                         padding: '1rem 0',
                         borderTop: '1px solid var(--border-color)',
-                        borderBottom: '1px solid var(--border-color)',
+                        // borderBottom: '1px solid var(--border-color)',
                         // justifyContent: 'center',
                         // alignItems: 'center',
                       }}
@@ -344,7 +348,7 @@ export default function Home() {
               >
                 {presets.find((preset) => preset.src === selectedImageSrc) ? null : (
                   <>
-                    <h4>Or upload your own:</h4>
+                    <h4>{!selectedImageSrc ? 'Or upload your own:' : 'Uploaded image:'}</h4>
 
                     <MyDropzone selectedImage={selectedImage} setImage={setSelectedImageSrc} />
                   </>

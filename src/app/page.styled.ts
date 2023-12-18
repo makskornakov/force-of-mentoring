@@ -170,6 +170,7 @@ export const StyledButton = styled.button<{ red?: boolean; green?: boolean; smal
 `;
 export const PreviewContainer = styled.div`
   align-items: center;
+  /* justify-content: center; */
   min-width: 400px;
 `;
 
@@ -198,7 +199,7 @@ export const CopyrightSpan = styled.span`
 export const PresetImageContainer = styled.div<{ selected?: boolean }>`
   background-color: #eefcfa;
   position: relative;
-  border: 3px dashed;
+  border: 3px solid;
   /* border-color: var(--border-color); */
   border-color: ${({ selected }) => (selected ? '#1cef18' : 'var(--border-color)')};
   border-radius: 0.5rem;
