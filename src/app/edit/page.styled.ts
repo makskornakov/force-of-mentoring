@@ -199,7 +199,7 @@ export const CopyrightSpan = styled.span`
 export const PresetImageContainer = styled.div<{ selected?: boolean }>`
   background-color: #eefcfa;
   position: relative;
-  border: 3px solid;
+  border: 2px solid;
   /* border-color: var(--border-color); */
   border-color: ${({ selected }) => (selected ? '#1cef18' : 'var(--border-color)')};
   border-radius: 0.5rem;

@@ -1,5 +1,8 @@
+import Link from 'next/link';
+import { CopyrightSpan, HeadContainer } from './edit/page.styled';
 import './globals.linaria.global';
 import { Inter } from 'next/font/google';
+import LinksList from '~/components/LinksNav';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -11,7 +14,39 @@ export const metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <body className={inter.className}>
+        <main
+          style={{
+            minHeight: '100vh',
+            padding: '2rem 0',
+            paddingBottom: '4rem',
+            position: 'relative',
+            display: 'flex',
+            flexDirection: 'column',
+            rowGap: '2rem',
+          }}
+        >
+          <HeadContainer>
+            <Link href="/">
+              <h1>Force Of Mentoring</h1>
+            </Link>
+            <LinksList />
+            {/* <h2>Template editor</h2> */}
+          </HeadContainer>
+          {children}
+          <CopyrightSpan>
+            ©{' '}
+            <Link href="https://github.com/makskornakov" target="_blank">
+              Max Kornakov
+            </Link>
+            ,{' '}
+            <Link href="https://www.mentoringeurope.eu" target="_blank">
+              Mentoring Europe
+            </Link>
+            , 2023
+          </CopyrightSpan>
+        </main>
+      </body>
     </html>
   );
 }

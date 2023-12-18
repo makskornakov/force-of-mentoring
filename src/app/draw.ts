@@ -1,4 +1,4 @@
-import { EditorMode } from './page';
+import { EditorMode } from './edit/page';
 
 export function drawLayout(
   ctx: CanvasRenderingContext2D,

@@ -2,7 +2,7 @@ import { useDropzone } from 'react-dropzone';
 import NextImage from 'next/image';
 import { styled } from '@linaria/react';
 import { revalidatePath } from 'next/cache';
-import { StyledButton } from './page.styled';
+import { StyledButton } from './edit/page.styled';
 
 export default function MyDropzone({
   setImage,
