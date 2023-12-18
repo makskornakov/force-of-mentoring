@@ -4,7 +4,10 @@ export const PreviewCanvasContainer = styled.div`
   width: 60%;
   aspect-ratio: 1;
   > canvas {
-    /* outline: 1px solid var(--main-color); */
+    /* media color scheme light */
+    @media (prefers-color-scheme: light) {
+      border: 1px solid var(--secondary-color);
+    }
 
     width: 100%;
     aspect-ratio: 1;

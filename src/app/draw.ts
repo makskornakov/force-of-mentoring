@@ -11,6 +11,7 @@ export function drawLayout(
   editMode: EditorMode,
 ) {
   const canvasSize = ctx.canvas.width;
+  console.log('drawLayout', canvasSize);
   ctx.clearRect(0, 0, canvasSize, canvasSize);
 
   ctx.fillStyle = '#EEFCFA';
