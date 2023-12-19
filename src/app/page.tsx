@@ -29,6 +29,7 @@ const downloadableImages = {
   'Mentoring Impact': '/download/mentoringImpact.png',
   // 'Preset 3': '/download/4sections.png',
   'Inspiration Butterfly': '/download/inspirationButterfly.png',
+  'Celebration image': '/download/celebration.png',
 };
 
 export default function Page() {
@@ -234,7 +235,7 @@ const DownloadContentWrapper = styled.div`
   padding: 1rem 0;
   padding-bottom: 2rem;
   flex-direction: row;
-  gap: 1.5rem;
+  gap: 0.5rem;
 
   > div {
     /* outline: 1px solid red; */

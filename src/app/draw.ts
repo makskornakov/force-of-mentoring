@@ -62,9 +62,11 @@ export function drawLayout(
   ctx.fillStyle = '#5A69AF';
   ctx.textAlign = 'right';
   ctx.textBaseline = 'middle';
-  ctx.fillText('Empowering people with', canvasSize - canvasSize / 3.7, hashY);
+  ctx.fillText('Empowering people with', canvasSize - canvasSize / 2.7, hashY);
   ctx.font = `700 ${quoteSize * 0.65}px Gaegu`;
-  ctx.fillText('#TheForceOfMentoring', canvasSize - titleSize / 3.5, hashY);
+  ctx.fillText('#TheForceOfMentoring', canvasSize / 2 + canvasSize / 2.65, hashY);
+  ctx.font = `400 ${quoteSize * 0.65}px Gaegu`;
+  ctx.fillText('in Europe', canvasSize - titleSize * 0.2, hashY);
 
   const watermarkSize = 290;
   const aspectRatio = 0.18;
@@ -203,7 +205,7 @@ export function reDrawOnCanvas({
   const minQuoteTextLength = 150;
   const maxQuoteTextLengthFromLines = Math.max(...quote.map((line) => line.length));
   const quoteTextLength = Math.max(
-    quoteSize * maxQuoteTextLengthFromLines * 0.26,
+    quoteSize * maxQuoteTextLengthFromLines * 0.27,
     minQuoteTextLength,
   );
 

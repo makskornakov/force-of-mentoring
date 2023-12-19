@@ -11,7 +11,7 @@ import watermark from '~/files/watermark.svg';
 // presets
 import mentoringImpact from '~/files/presets/mentoringImpact.svg';
 import mentoringBenefits from '~/files/presets/mentoringBenefits.svg';
-// import preset3 from '~/files/presets/preset3.svg';
+import celebration from '~/files/presets/celebrate.svg';
 
 import exampleImage from '../files/example2.png';
 import NextImage from 'next/image';
@@ -40,7 +40,11 @@ const quoteSize = 50;
 
 export type EditorMode = 'text' | 'media';
 const editorModes = ['text', 'media'] as EditorMode[];
-const presetOrder = ['Mentoring Impact', 'Mentoring Benefits for Youth', 'Preset 3'] as const;
+const presetOrder = [
+  'Mentoring Impact',
+  'Mentoring Benefits for Youth',
+  'Celebration text',
+] as const;
 
 export default function Home() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -95,7 +99,7 @@ export default function Home() {
 
     // load presets
     const presets = {
-      // preset3: createImage(preset3.src, 'Preset 3'),
+      celebration: createImage(celebration.src, 'Celebration text'),
       mentoringImpact: createImage(mentoringImpact.src, 'Mentoring Impact'),
       mentoringBenefits: createImage(mentoringBenefits.src, 'Mentoring Benefits for Youth'),
     };
@@ -235,7 +239,7 @@ export default function Home() {
                   }}
                   value={customText}
                   onChange={(e) => {
-                    const maxLines = 6;
+                    const maxLines = 7;
                     const lines = parseStringIntoLines(e.target.value, 70);
                     if (lines.length > maxLines) return;
 
@@ -395,7 +399,7 @@ export default function Home() {
                 // console.log('dataUrl', dataUrl);
                 const a = document.createElement('a');
                 a.href = dataUrl;
-                a.download = `${userTitle || 'title'}.png`;
+                a.download = `${userTitle || selectedImage?.alt || 'Untitled'}.png`;
                 a.click();
               }
             }}
