@@ -27,7 +27,7 @@ const overviewImages = {
 const downloadableImages = {
   'Mentoring Benefits': '/download/mentoringBenefits.png',
   'Mentoring Impact': '/download/mentoringImpact.png',
-  'Preset 3': '/download/preset3.svg',
+  'Preset 3': '/download/4sections.png',
   'Inspiration Butterfly': '/download/inspirationButterfly.png',
 };
 
@@ -104,7 +104,14 @@ export default function Page() {
         {Object.entries(overviewImages).map(([name, src]) => (
           <div key={name}>
             <div>
-              <NextImage src={src} layout="fill" alt={name} />
+              <NextImage
+                src={src}
+                layout="fill"
+                alt={name}
+                style={{
+                  objectFit: 'contain',
+                }}
+              />
             </div>
             <h4>{name}</h4>
           </div>
@@ -116,7 +123,15 @@ export default function Page() {
         {Object.entries(downloadableImages).map(([name, src]) => (
           <div key={name}>
             <div>
-              <NextImage src={src} fill alt={name} quality={20} />
+              <NextImage
+                src={src}
+                fill
+                alt={name}
+                quality={20}
+                style={{
+                  objectFit: 'contain',
+                }}
+              />
             </div>
             <h4>{name}</h4>
             <StyledButton
