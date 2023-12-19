@@ -9,7 +9,7 @@ const inter = Inter({ subsets: ['latin'] });
 
 export const metadata = {
   title: 'Force Of Mentoring',
-  description: 'Force of Mentoring marketing campaign by Mentoring Europe',
+  description: 'Force of Mentoring, a communication campaign by Mentoring Europe',
   // icons: [
   //   {
   //     rel: 'icon',

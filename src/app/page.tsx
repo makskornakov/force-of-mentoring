@@ -15,7 +15,8 @@ import inspiringImage from '~/files/overview/inspiring.png';
 
 import { HomePageContainer, OverviewContainer } from './page.styled';
 import { StyledButton } from './edit/page.styled';
-import { styled } from '@linaria/react';
+import { HtmlStyledTag, styled } from '@linaria/react';
+import { HiDownload } from 'react-icons/hi';
 
 const overviewImages = {
   'Text template': textOverview,
@@ -24,8 +25,8 @@ const overviewImages = {
 };
 
 const downloadableImages = {
-  'Mentoring Benefits': '/download/mentoringBenefits.svg',
-  'Mentoring Impact': '/download/mentoringImpact.svg',
+  'Mentoring Benefits': '/download/mentoringBenefits.png',
+  'Mentoring Impact': '/download/mentoringImpact.png',
   'Preset 3': '/download/preset3.svg',
   'Inspiration Butterfly': '/download/inspirationButterfly.png',
 };
@@ -35,23 +36,29 @@ export default function Page() {
   return (
     <HomePageContainer>
       <h1>Discover The Force of Mentoring</h1>
-      <h2>Introduction</h2>
+      {/* <h2>Introduction</h2> */}
       <p>
-        The campaign provides downloadable templates. Edit and share them across your social media
-        platforms to empower and showcase unity within the European Mentoring Community.
+        As we step into the new year, we are thrilled to release a transformative campaign that
+        holds the power to inspire, connect, and uplift European society. This is your exclusive
+        access point to the heart of our upcoming communication campaign, launching on{' '}
+        <strong>January 17, 2024</strong>, the official European Mentoring Day.
+      </p>
+      <q>It is not about Mentoring Europe. It is about Mentoring IN Europe.</q>
+      <h2>About</h2>
+      <p>
+        We invite you to share your mentoring journey, amplify our collective story, and shine a
+        light on the effect of mentoring, how one relationship can affect many lives and create a
+        positive current within society. Your experiences as a mentor or mentee are a valuable piece
+        of the puzzle that makes the Force of Mentoring so impactful.
       </p>
       <p>
-        This manual explores the heart of our upcoming marketing campaign - The Force of Mentoring,
-        which will launch on{' '}
-        <strong>
-          <u>January 17, 2024</u>
-        </strong>
-        , coinciding with the official European Mentoring Day.
+        <Link href="/edit">Editable Templates</Link> have been developed for you to share across
+        social media platforms to empower and showcase unity within the European Mentoring
+        Community.
       </p>
       <p>
-        <Link href="/edit">Editable templates</Link> allow you to amplify our story, share your
-        mentoring experience as a mentor or mentee, and shine a light on the impact of mentoring on
-        European society.
+        These templates allow you to amplify our story, share your mentoring experience as a mentor
+        or mentee, and shine a light on the impact of mentoring on European society.
       </p>
       <h2>Our Goal</h2>
       <p>
@@ -85,7 +92,7 @@ export default function Page() {
           </ul>
         </li>
       </ul>
-      <MovingH2>Template overview</MovingH2>
+      <MovingH2>Template examples</MovingH2>
       <OverviewContainer>
         {/* <div>
           <NextImage
@@ -104,11 +111,12 @@ export default function Page() {
         ))}
       </OverviewContainer>
       <MovingH2>Download content</MovingH2>
+      <MovingH3>For use on your own designs</MovingH3>
       <DownloadContentWrapper>
         {Object.entries(downloadableImages).map(([name, src]) => (
           <div key={name}>
             <div>
-              <NextImage src={src} fill alt={name} />
+              <NextImage src={src} fill alt={name} quality={20} />
             </div>
             <h4>{name}</h4>
             <StyledButton
@@ -126,6 +134,7 @@ export default function Page() {
               green
             >
               Download
+              <HiDownload />
             </StyledButton>
           </div>
         ))}
@@ -168,18 +177,11 @@ const DownloadContentWrapper = styled.div`
     row-gap: 0.5rem;
 
     > div {
-      background-color: rgba(0, 0, 0, 0.2);
-      /* filter: drop-shadow(0px 0px 10px rgba(0, 0, 0, 0.25)); */
+      background-color: #eefcfa;
       border-radius: 0.25rem;
       position: relative;
       width: 80%;
       aspect-ratio: 1;
-
-      /* if media theme dark */
-      @media (prefers-color-scheme: dark) {
-        background-color: rgba(255, 255, 255, 0.3);
-        /* filter: drop-shadow(0px 0px 100px rgba(255, 255, 255, 0.3)); */
-      }
     }
   }
 
@@ -189,6 +191,11 @@ const DownloadContentWrapper = styled.div`
 `;
 
 const MovingH2 = styled.h2`
+  @media (max-width: 1000px) {
+    align-self: center !important;
+  }
+`;
+const MovingH3 = styled.h3`
   @media (max-width: 1000px) {
     align-self: center !important;
   }

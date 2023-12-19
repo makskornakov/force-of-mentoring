@@ -60,14 +60,18 @@ export const HomePageContainer = styled.div`
     font-size: 3.25rem;
     color: #a18bf8;
     font-family: 'Poor Story', sans-serif;
+    margin-bottom: 1rem;
   }
   > h2 {
     margin-top: 1rem;
     font-size: 1.5rem;
     color: var(--main-color);
-    font-family: 'Inter', sans-serif;
+  }
+  > h3,
+  > h2 {
     align-self: flex-start;
   }
+
   > ul {
     align-self: flex-start;
 
@@ -97,7 +101,12 @@ export const HomePageContainer = styled.div`
       }
     }
   }
-
+  > q {
+    /* tob, bottom 1.5rem, other 0 */
+    margin: 1rem 0;
+    font-family: 'Poor Story', sans-serif;
+    font-size: 1.75rem;
+  }
   > p {
     font-size: 1rem;
     font-weight: 300;

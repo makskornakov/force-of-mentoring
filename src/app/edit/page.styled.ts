@@ -164,6 +164,9 @@ export const HomeContainer = styled.div`
 export const StyledButton = styled.button<{ red?: boolean; green?: boolean; small?: boolean }>`
   background-color: transparent;
   /* padding: 0.5rem 1rem; */
+  display: flex;
+  align-items: center;
+  column-gap: 0.3rem;
   padding: ${({ small }) => (small ? '0.25rem 0.5rem' : '0.5rem 1rem')};
   border-radius: ${({ small }) => (small ? '0.25rem' : '0.5rem')};
   border: 1px solid;

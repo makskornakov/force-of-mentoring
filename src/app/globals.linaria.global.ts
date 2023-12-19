@@ -52,6 +52,7 @@ export const globals = css`
 
     body {
       color: var(--main-color);
+      font-family: 'Inter', sans-serif;
       background: var(--background-color);
     }
 
