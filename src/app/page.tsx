@@ -27,7 +27,7 @@ const overviewImages = {
 const downloadableImages = {
   'Mentoring Benefits': '/download/mentoringBenefits.png',
   'Mentoring Impact': '/download/mentoringImpact.png',
-  'Preset 3': '/download/4sections.png',
+  // 'Preset 3': '/download/4sections.png',
   'Inspiration Butterfly': '/download/inspirationButterfly.png',
 };
 
@@ -181,6 +181,7 @@ export default function Page() {
             <div>
               <NextImage
                 src={src}
+                placeholder="empty"
                 fill
                 alt={name}
                 quality={20}
@@ -236,10 +237,11 @@ const DownloadContentWrapper = styled.div`
   gap: 1.5rem;
 
   > div {
+    /* outline: 1px solid red; */
     /* border: 1px solid var(--border-color); */
     /* border-radius: 0.25rem; */
-    width: 12rem;
-    height: 14rem;
+    width: 15rem;
+    height: 16.5rem;
     padding: 0.5rem;
 
     display: flex;

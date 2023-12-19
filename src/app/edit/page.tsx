@@ -11,7 +11,7 @@ import watermark from '~/files/watermark.svg';
 // presets
 import mentoringImpact from '~/files/presets/mentoringImpact.svg';
 import mentoringBenefits from '~/files/presets/mentoringBenefits.svg';
-import preset3 from '~/files/presets/preset3.svg';
+// import preset3 from '~/files/presets/preset3.svg';
 
 import exampleImage from '../files/example2.png';
 import NextImage from 'next/image';
@@ -63,7 +63,7 @@ export default function Home() {
   const [selectedImage, setSelectedImage] = useState<HTMLImageElement | undefined>(undefined);
   // const [lastSelectedImageSrc, setLastSelectedImageSrc] = useState<string | undefined>(undefined);
   // const [selectedImageSrc, setSelectedImageSrc] = useState<string | undefined>(undefined);
-  const [selectedImageSize, setSelectedImageSize] = useState<number>(40);
+  const [selectedImageSize, setSelectedImageSize] = useState<number>(50);
 
   const [loadedImages, setLoadedImages] = useState<Record<string, HTMLImageElement>>({});
   const [loadedPresets, setLoadedPresets] = useState<Record<string, HTMLImageElement>>({});
@@ -95,7 +95,7 @@ export default function Home() {
 
     // load presets
     const presets = {
-      preset3: createImage(preset3.src, 'Preset 3'),
+      // preset3: createImage(preset3.src, 'Preset 3'),
       mentoringImpact: createImage(mentoringImpact.src, 'Mentoring Impact'),
       mentoringBenefits: createImage(mentoringBenefits.src, 'Mentoring Benefits for Youth'),
     };
