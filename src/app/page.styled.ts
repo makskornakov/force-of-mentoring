@@ -72,35 +72,6 @@ export const HomePageContainer = styled.div`
     align-self: flex-start;
   }
 
-  > ul {
-    align-self: flex-start;
-
-    border-top: 1px solid var(--border-color);
-    border-bottom: 1px solid var(--border-color);
-
-    padding: 0 1.5rem;
-    padding-bottom: 1rem;
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    row-gap: 0.5rem;
-    width: 100%;
-    justify-content: space-between;
-
-    > li {
-      margin-top: 0.5rem;
-      list-style-type: decimal;
-      line-height: 2rem;
-    }
-
-    ul {
-      margin-left: 1rem;
-
-      > li {
-        line-height: 1.5rem;
-      }
-    }
-  }
   > q {
     /* tob, bottom 1.5rem, other 0 */
     margin: 1rem 0;
@@ -109,6 +80,7 @@ export const HomePageContainer = styled.div`
   }
   > p {
     font-size: 1rem;
+    align-self: flex-start;
     font-weight: 300;
 
     font-family: 'Inter', sans-serif;
@@ -132,5 +104,32 @@ export const HomePageContainer = styled.div`
   }
   @media (max-width: 500px) {
     width: 90%;
+  }
+`;
+
+export const StyledUl = styled.ul<{ row?: boolean; bullets?: boolean }>`
+  align-self: flex-start;
+
+  padding: 0 1.5rem;
+  padding-bottom: 1rem;
+  display: flex;
+  flex-direction: ${({ row }) => (row ? 'row' : 'column')};
+  flex-wrap: wrap;
+  row-gap: 0.5rem;
+  width: 100%;
+  justify-content: space-between;
+
+  > li {
+    margin-top: 0.5rem;
+    list-style-type: ${({ bullets }) => (bullets ? 'disc' : 'decimal')};
+    line-height: 2rem;
+  }
+
+  ul {
+    margin-left: 1rem;
+
+    > li {
+      line-height: 1.5rem;
+    }
   }
 `;

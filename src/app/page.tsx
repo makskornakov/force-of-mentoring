@@ -13,7 +13,7 @@ import inspiringImage from '~/files/overview/inspiring.png';
 
 // import inspirationButterfly from '~/../public/download/inspirationButterfly.png';
 
-import { HomePageContainer, OverviewContainer } from './page.styled';
+import { HomePageContainer, OverviewContainer, StyledUl } from './page.styled';
 import { StyledButton } from './edit/page.styled';
 import { HtmlStyledTag, styled } from '@linaria/react';
 import { HiDownload } from 'react-icons/hi';
@@ -67,21 +67,27 @@ export default function Page() {
         the immense value of mentoring in individuals’ lives throughout Europe.
       </p>
       <h2>The Campaign consists of:</h2>
-      <ul>
+      <StyledUl
+        row
+        style={{
+          borderTop: '1px solid var(--border-color)',
+          borderBottom: '1px solid var(--border-color)',
+        }}
+      >
         <li>
-          Templates:
+          Templates to edit:
           <ul>
-            <li>Empty Text Template</li>
-            <li>Empty Media Template</li>
-            <li>Inspiring Image</li>
+            <li>For text content</li>
+            <li>For media, or other content</li>
+            {/* <li>Inspiring Image</li> */}
           </ul>
         </li>
         <li>
           Infographic:
           <ul>
-            <li>Mentoring field Facts & Figures</li>
-            <li>Drop-out prevention statistics</li>
-            <li>Committee of regions</li>
+            <li>Mentoring Benefits for youth</li>
+            <li>Mentoring Impact</li>
+            <li>4 sections (Coming)</li>
           </ul>
         </li>
         <li>
@@ -91,7 +97,7 @@ export default function Page() {
             <li>For content</li>
           </ul>
         </li>
-      </ul>
+      </StyledUl>
       <MovingH2>Template examples</MovingH2>
       <OverviewContainer>
         {/* <div>
@@ -117,6 +123,56 @@ export default function Page() {
           </div>
         ))}
       </OverviewContainer>
+      <h2>Guidelines & Advice</h2>
+      <h3
+        style={{
+          textDecoration: 'underline',
+        }}
+      >
+        Template form (editing)
+      </h3>
+      <StyledUl
+        bullets
+        style={{
+          borderBottom: '1px solid var(--border-color)',
+        }}
+      >
+        <li>
+          There are two editing modes for text and media
+          <ul>
+            <li>Use text mode for longer paragraphs.</li>
+            <li>You can use one of our images or upload your own in the media mode.</li>
+          </ul>
+        </li>
+        <li>Preferably post in English, but you can also use your native language.</li>
+        <li>Several templates can be used in one post; Graphics preferably come first.</li>
+      </StyledUl>
+      <h3
+        style={{
+          marginTop: '.5rem',
+          textDecoration: 'underline',
+        }}
+      >
+        Content
+      </h3>
+      <p>
+        To use the provided template, please follow these guidelines regarding the type and
+        relevancy of this topic:
+      </p>
+      <StyledUl
+        bullets
+        style={{
+          borderBottom: '1px solid var(--border-color)',
+        }}
+      >
+        <li>Stories and Quotes of Mentors, testimonials.</li>
+        <li>Mentees&apos; Perspectives.</li>
+        <li>Testimonies of Powerful Relationships</li>
+        <li>Annual Matching Statistics for Your Organization</li>
+        <li>
+          <i>...Similar topics</i>
+        </li>
+      </StyledUl>
       <MovingH2>Download content</MovingH2>
       <MovingH3>For use on your own designs</MovingH3>
       <DownloadContentWrapper>
