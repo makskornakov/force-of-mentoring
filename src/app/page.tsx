@@ -174,7 +174,7 @@ export default function Page() {
         </li>
       </StyledUl>
       <MovingH2>Download content</MovingH2>
-      <MovingH3>For use on your own designs</MovingH3>
+      <MovingH3>Transparent images for use on other designs</MovingH3>
       <DownloadContentWrapper>
         {Object.entries(downloadableImages).map(([name, src]) => (
           <div key={name}>
