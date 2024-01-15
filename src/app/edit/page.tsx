@@ -246,8 +246,10 @@ export default function Home() {
                 reader.onload = (e) => {
                   const img = new Image();
                   img.onload = () => {
-                    setLogoImage(img);
-                    reDraw(userTitle, parsedCustomText, parsedQuoteText, selectedImageSize);
+                    setTimeout(() => {
+                      setLogoImage(img);
+                      reDraw(userTitle, parsedCustomText, parsedQuoteText, selectedImageSize);
+                    }, 100);
                   };
                   img.src = e.target?.result as string;
                 };
