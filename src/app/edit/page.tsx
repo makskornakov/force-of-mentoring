@@ -160,6 +160,7 @@ export default function Home() {
         quote: string[],
         selectedImageSize: number,
         userSelectedImage?: HTMLImageElement | undefined,
+        userLogoImage?: HTMLImageElement | undefined,
       ) =>
         reDrawOnCanvas({
           ctx,
@@ -173,17 +174,23 @@ export default function Home() {
           customText,
           quote,
           selectedImage: userSelectedImage,
-          logoImage,
+          logoImage: userLogoImage,
           selectedImageSize,
           editMode: editingMode,
         }),
-    [ctx, editingMode, loadedImages, logoImage],
+    [ctx, editingMode, loadedImages],
   );
 
   function setNewImageAndRedraw(image: HTMLImageElement | undefined) {
     setSelectedImage(image);
     // ! OTher wise it will not update on drop
-    reDraw(userTitle, parsedCustomText, parsedQuoteText, selectedImageSize, image);
+    reDraw(userTitle, parsedCustomText, parsedQuoteText, selectedImageSize, image, undefined);
+  }
+
+  function setNewLogoAndRedraw(image: HTMLImageElement | undefined) {
+    setLogoImage(image);
+    // ! OTher wise it will not update on drop
+    reDraw(userTitle, parsedCustomText, parsedQuoteText, selectedImageSize, selectedImage, image);
   }
 
   useEffect(() => {
@@ -194,8 +201,17 @@ export default function Home() {
       parsedQuoteText.filter((line) => line),
       selectedImageSize,
       selectedImage,
+      logoImage,
     );
-  }, [userTitle, reDraw, parsedCustomText, parsedQuoteText, selectedImageSize, selectedImage]);
+  }, [
+    userTitle,
+    reDraw,
+    parsedCustomText,
+    parsedQuoteText,
+    selectedImageSize,
+    selectedImage,
+    logoImage,
+  ]);
 
   return (
     <>
@@ -247,8 +263,7 @@ export default function Home() {
                   const img = new Image();
                   img.onload = () => {
                     setTimeout(() => {
-                      setLogoImage(img);
-                      reDraw(userTitle, parsedCustomText, parsedQuoteText, selectedImageSize);
+                      setNewLogoAndRedraw(img);
                     }, 100);
                   };
                   img.src = e.target?.result as string;
