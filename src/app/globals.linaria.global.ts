@@ -68,6 +68,12 @@ export const globals = css`
       font-weight: 300;
     }
 
+    /* input with class logo-input */
+
+    .logo-input {
+      height: 10rem !important;
+    }
+
     ${media.prefersColorSchemeDark} {
       html {
         color-scheme: dark;

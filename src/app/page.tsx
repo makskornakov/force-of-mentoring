@@ -198,6 +198,7 @@ export default function Page() {
                 const link = document.createElement('a');
                 // set the link's href
                 link.href = src;
+                console.log(name, src);
                 // set the download attribute
                 link.download = name;
                 // trigger click event

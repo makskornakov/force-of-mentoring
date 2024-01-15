@@ -54,19 +54,20 @@ export function drawLayout(
   // footer
   ctx.fillStyle = '#fff';
   ctx.font = `400 ${quoteSize * 0.65}px Gaegu`;
-  ctx.rect(0, canvasSize - titleSize * 0.9, canvasSize, titleSize * 0.9);
+  ctx.rect(0, canvasSize - titleSize, canvasSize, titleSize);
   ctx.fill();
 
-  const hashY = canvasSize - titleSize * 0.42;
+  const hashY1 = canvasSize - titleSize * 0.7;
+  const hashY2 = canvasSize - titleSize * 0.3;
 
   ctx.fillStyle = '#5A69AF';
   ctx.textAlign = 'right';
   ctx.textBaseline = 'middle';
-  ctx.fillText('Empowering people with', canvasSize - canvasSize / 2.7, hashY);
+  ctx.fillText('Empowering people with', canvasSize - 20, hashY1);
   ctx.font = `700 ${quoteSize * 0.65}px Gaegu`;
-  ctx.fillText('#TheForceOfMentoring', canvasSize / 2 + canvasSize / 2.65, hashY);
+  ctx.fillText('#TheForceOfMentoring', canvasSize - 160, hashY2);
   ctx.font = `400 ${quoteSize * 0.65}px Gaegu`;
-  ctx.fillText('in Europe', canvasSize - titleSize * 0.2, hashY);
+  ctx.fillText('in Europe', canvasSize - titleSize * 0.2, hashY2);
 
   const watermarkSize = 290;
   const aspectRatio = 0.18;
@@ -74,7 +75,7 @@ export function drawLayout(
   ctx.drawImage(
     watermark,
     watermarkSize * aspectRatio * 0.5,
-    canvasSize - watermarkSize * aspectRatio * 1.3,
+    canvasSize - watermarkSize * aspectRatio * 1.4,
     watermarkSize,
     watermarkSize * aspectRatio,
   );
@@ -94,6 +95,7 @@ export function reDrawOnCanvas({
   customText,
   quote,
   selectedImage,
+  logoImage,
   selectedImageSize,
   editMode,
 }: {
@@ -108,6 +110,7 @@ export function reDrawOnCanvas({
   customText: string[];
   quote: string[];
   selectedImage?: HTMLImageElement;
+  logoImage?: HTMLImageElement;
   selectedImageSize: number;
   editMode: EditorMode;
 }) {
@@ -130,6 +133,20 @@ export function reDrawOnCanvas({
     quoteSize,
     editMode,
   );
+
+  // draw logo
+  if (logoImage) {
+    const wantedHeight = titleSize;
+    const calcWidth = (wantedHeight / logoImage.height) * logoImage.width;
+
+    ctx.drawImage(
+      logoImage,
+      canvasSize / 2 - calcWidth / 2,
+      canvasSize - wantedHeight,
+      calcWidth,
+      wantedHeight,
+    );
+  }
 
   // draw user image
 
@@ -192,11 +209,11 @@ export function reDrawOnCanvas({
   ctx.textAlign = 'center';
   ctx.textBaseline = 'middle';
   // draw under the main text, so we need to know how many lines we have
-  const linesAmount = customText?.length || 0;
+  const linesAmount = Math.max(customText?.length || 0, 2);
   const quoteTextY =
     editMode === 'text'
-      ? canvasSize / 1.68 + customTextSize * 1.3 * linesAmount + quoteSize
-      : canvasSize - titleSize * Math.sqrt(Math.max(quote.length, 1)) * 1.3;
+      ? canvasSize / 1.75 + customTextSize * 1.3 * linesAmount + quoteSize
+      : canvasSize - titleSize * Math.sqrt(Math.max(quote.length, 1)) * 1.5;
 
   quote?.forEach((line, index) => {
     ctx.fillText(line, canvasSize / 2, quoteTextY + quoteSize * index);

@@ -48,6 +48,8 @@ const presetOrder = [
 
 export default function Home() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const logoInputRef = useRef<HTMLInputElement>(null);
+
   const [ctx, setCtx] = useState<CanvasRenderingContext2D>();
   const [userTitle, setUserTitle] = useState<string>('Text Title');
   const [customText, setCustomText] = useState<string>('Any text');
@@ -71,6 +73,8 @@ export default function Home() {
 
   const [loadedImages, setLoadedImages] = useState<Record<string, HTMLImageElement>>({});
   const [loadedPresets, setLoadedPresets] = useState<Record<string, HTMLImageElement>>({});
+
+  const [logoImage, setLogoImage] = useState<HTMLImageElement | undefined>(undefined);
 
   // load images
   useEffect(() => {
@@ -169,10 +173,11 @@ export default function Home() {
           customText,
           quote,
           selectedImage: userSelectedImage,
+          logoImage,
           selectedImageSize,
           editMode: editingMode,
         }),
-    [ctx, editingMode, loadedImages],
+    [ctx, editingMode, loadedImages, logoImage],
   );
 
   function setNewImageAndRedraw(image: HTMLImageElement | undefined) {
@@ -229,6 +234,64 @@ export default function Home() {
             <h3>Title</h3>
             <input type="text" value={userTitle} onChange={(e) => setUserTitle(e.target.value)} />
           </label>
+          <label>
+            <h3>Your Logo</h3>
+            <input
+              ref={logoInputRef}
+              type="file"
+              onChange={(e) => {
+                const file = e.target.files?.[0];
+                if (!file) return;
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                  const img = new Image();
+                  img.onload = () => {
+                    setLogoImage(img);
+                    reDraw(userTitle, parsedCustomText, parsedQuoteText, selectedImageSize);
+                  };
+                  img.src = e.target?.result as string;
+                };
+                reader.readAsDataURL(file);
+              }}
+            />
+          </label>
+          {logoImage && (
+            <>
+              <div
+                style={{
+                  borderRadius: '0.25rem',
+                  height: '5rem',
+                  width: '10rem',
+                  backgroundColor: '#e7e7e7',
+                  position: 'relative',
+                }}
+              >
+                <NextImage
+                  src={logoImage.src}
+                  alt="logo"
+                  fill
+                  style={{
+                    padding: '.5rem',
+                    objectFit: 'contain',
+                  }}
+                />
+              </div>
+              <StyledButton
+                onClick={() => {
+                  setLogoImage(undefined);
+
+                  // clear logoInputRef
+                  if (logoInputRef.current) {
+                    logoInputRef.current.value = '';
+                  }
+                }}
+                red
+                small
+              >
+                Remove
+              </StyledButton>
+            </>
+          )}
           {editingMode === 'text' ? (
             <>
               <label>
