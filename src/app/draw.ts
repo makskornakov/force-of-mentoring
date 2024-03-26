@@ -69,13 +69,13 @@ export function drawLayout(
   ctx.font = `400 ${quoteSize * 0.65}px Gaegu`;
   ctx.fillText('in Europe', canvasSize - titleSize * 0.2, hashY2);
 
-  const watermarkSize = 290;
-  const aspectRatio = 0.18;
+  const watermarkSize = 150;
+  const aspectRatio = 0.5;
 
   ctx.drawImage(
     watermark,
     watermarkSize * aspectRatio * 0.5,
-    canvasSize - watermarkSize * aspectRatio * 1.4,
+    canvasSize - watermarkSize * aspectRatio * 1.2,
     watermarkSize,
     watermarkSize * aspectRatio,
   );

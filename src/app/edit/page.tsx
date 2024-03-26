@@ -6,7 +6,7 @@ import butterfly from '~/files/butterfly1.svg';
 import line1 from '~/files/line1.svg';
 import line2 from '~/files/line2.svg';
 import quoteIcon from '~/files/quote.svg';
-import watermark from '~/files/watermark.svg';
+import watermark from '~/files/watermark logo.svg';
 
 // presets
 import mentoringImpact from '~/files/presets/mentoringImpact.svg';
@@ -319,7 +319,7 @@ export default function Home() {
                   }}
                   value={customText}
                   onChange={(e) => {
-                    const maxLines = 7;
+                    const maxLines = 6;
                     const lines = parseStringIntoLines(e.target.value, 70);
                     if (lines.length > maxLines) return;
 
@@ -446,7 +446,7 @@ export default function Home() {
               }}
               value={quoteText}
               onChange={(e) => {
-                const maxLines = 3;
+                const maxLines = 5;
                 const lines = parseStringIntoLines(e.target.value, 40);
                 if (lines.length > maxLines) return;
                 setParsedQuoteText(lines);
