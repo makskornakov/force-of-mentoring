@@ -212,7 +212,8 @@ export function reDrawOnCanvas({
   const linesAmount = Math.max(customText?.length || 0, 2);
   const quoteTextY =
     editMode === 'text'
-      ? canvasSize / 1.75 + customTextSize * 1.3 * linesAmount + quoteSize
+      ? // ? canvasSize / 1.75 + customTextSize * 1.3 * linesAmount + quoteSize
+        canvasSize / 1.75 + 0 * 1.3 * linesAmount + quoteSize
       : canvasSize - titleSize * Math.sqrt(Math.max(quote.length, 1)) * 1.5;
 
   quote?.forEach((line, index) => {

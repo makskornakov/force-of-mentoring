@@ -52,8 +52,10 @@ export default function Home() {
 
   const [ctx, setCtx] = useState<CanvasRenderingContext2D>();
   const [userTitle, setUserTitle] = useState<string>('Text Title');
-  const [customText, setCustomText] = useState<string>('Any text');
-  const [parsedCustomText, setParsedCustomText] = useState<string[]>(['Any text']);
+  // const [customText, setCustomText] = useState<string>('Any text');
+  const [customText, setCustomText] = useState<string>('');
+  // const [parsedCustomText, setParsedCustomText] = useState<string[]>(['Any text']);
+  const [parsedCustomText, setParsedCustomText] = useState<string[]>([]);
   const [quoteText, setQuoteText] = useState<string>('text of the quote');
   const [parsedQuoteText, setParsedQuoteText] = useState<string[]>(['text of the quote']);
 
@@ -311,7 +313,7 @@ export default function Home() {
           )}
           {editingMode === 'text' ? (
             <>
-              <label>
+              {/* <label>
                 <h3>Custom text</h3>
                 <textarea
                   style={{
@@ -327,7 +329,7 @@ export default function Home() {
                     setParsedCustomText(lines);
                   }}
                 />
-              </label>
+              </label> */}
             </>
           ) : (
             <>
@@ -446,7 +448,7 @@ export default function Home() {
               }}
               value={quoteText}
               onChange={(e) => {
-                const maxLines = 5;
+                const maxLines = 8;
                 const lines = parseStringIntoLines(e.target.value, 40);
                 if (lines.length > maxLines) return;
                 setParsedQuoteText(lines);
